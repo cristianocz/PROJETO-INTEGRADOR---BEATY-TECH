@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento - Salão de Beleza</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Agende seu Serviço</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="about.html">Sobre</a></li>
+                <li><a href="services.html">Serviços</a></li>
+                <li><a href="contact.html">Contato</a></li>
+                <li><a href="schedule.html">Agendar</a></li>
+                <li><a href="clients.html">Clientes</a></li>
+                <li><a href="employees.html">Funcionários</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Formulário de Agendamento</h2>
+            <form id="schedule-form">
+                <label for="client-name">Nome do Cliente:</label>
+                <input type="text" id="client-name" name="client-name" required>
+
+                <label for="service">Serviço:</label>
+                <select id="service" name="service" required>
+                    <option value="">Selecione um serviço</option>
+                    <option value="corte">Corte de Cabelo</option>
+                    <option value="manicure">Manicure</option>
+                    <option value="massagem">Massagem</option>
+                    <option value="depilacao">Depilação</option>
+                </select>
+
+                <label for="date">Data:</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="time">Hora:</label>
+                <input type="time" id="time" name="time" required>
+
+                <label for="employee">Funcionário:</label>
+                <select id="employee" name="employee" required>
+                    <option value="">Selecione um funcionário</option>
+                    <option value="joao">João</option>
+                    <option value="maria">Maria</option>
+                    <option value="ana">Ana</option>
+                    <option value="carlos">Carlos</option>
+                </select>
+
+                <button type="submit">Agendar</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 BEATY TECH. Todos os direitos reservados.</p>
+    </footer>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
