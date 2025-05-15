@@ -1,64 +1,242 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendamento - Salão de Beleza</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Agendamento - Caroline Gimenes Beauty</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/pages/schedule.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Agende seu Serviço</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="about.html">Sobre</a></li>
-                <li><a href="services.html">Serviços</a></li>
-                <li><a href="contact.html">Contato</a></li>
-                <li><a href="schedule.html">Agendar</a></li>
-                <li><a href="clients.html">Clientes</a></li>
-                <li><a href="employees.html">Funcionários</a></li>
-            </ul>
+    <header class="header">
+        <div class="container">
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="about.html" class="nav-link">Sobre Nós</a>
+                <a href="services.html" class="nav-link">Serviços</a>
+                <a href="schedule.html" class="nav-link">Agendar</a>
+                <a href="clients.html" class="nav-link">Clientes</a>
+                <a href="employees.html" class="nav-link">Funcionários</a>
+                <a href="contact.html" class="nav-link">Contato</a>
+            </nav>
+        </div>
         </nav>
-    </header>
-    <main>
-        <section>
-            <h2>Formulário de Agendamento</h2>
-            <form id="schedule-form">
-                <label for="client-name">Nome do Cliente:</label>
-                <input type="text" id="client-name" name="client-name" required>
+    </header>    <main class="container">
+        <div class="schedule-container">
+            <aside class="schedule-sidebar">
+                <div class="service-selector">                    <h2>Selecione o Serviço</h2>                    <div class="service-category">
+                        <h3>Tratamentos</h3>
+                        <div class="service-option">
+                            <div class="service-option-info">
+                                <div class="service-name">Hidratação</div>
+                                <div class="service-duration">45 min</div>
+                                <div class="service-price">R$ 80,00</div>
+                            </div>
+                        </div>
+                        <div class="service-option">
+                            <div class="service-option-info">
+                                <div class="service-name">Penteado</div>
+                                <div class="service-duration">60 min</div>
+                                <div class="service-price">R$ 250,00</div>
+                            </div>
+                        </div>
+                        <div class="service-option">
+                            <div class="service-option-info">
+                                <div class="service-name">Maquiagem</div>
+                                <div class="service-duration">90 min</div>
+                                <div class="service-price">R$ 350,00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <label for="service">Serviço:</label>
-                <select id="service" name="service" required>
-                    <option value="">Selecione um serviço</option>
-                    <option value="corte">Corte de Cabelo</option>
-                    <option value="manicure">Manicure</option>
-                    <option value="massagem">Massagem</option>
-                    <option value="depilacao">Depilação</option>
-                </select>
+                <div class="booking-summary">
+                    <h3>Resumo do Agendamento</h3>
+                    <div class="summary-item">
+                        <span class="summary-label">Serviço:</span>
+                        <span class="summary-value">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Profissional:</span>
+                        <span class="summary-value">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Data:</span>
+                        <span class="summary-value">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Horário:</span>
+                        <span class="summary-value">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Total:</span>
+                        <span class="summary-value">R$ 0,00</span>
+                    </div>
+                    <button class="book-button">Confirmar Agendamento</button>
+                </div>
+            </aside>
 
-                <label for="date">Data:</label>
-                <input type="date" id="date" name="date" required>
+            <section class="schedule-main">
+                <div class="date-selector">
+                    <div class="month-navigation">
+                        <button class="button-secondary">
+                            <span class="material-icons">chevron_left</span>
+                        </button>
+                        <h2>Maio 2025</h2>
+                        <button class="button-secondary">
+                            <span class="material-icons">chevron_right</span>
+                        </button>
+                    </div>
+                    <div class="calendar">
+                        <div class="calendar-header">Dom</div>
+                        <div class="calendar-header">Seg</div>
+                        <div class="calendar-header">Ter</div>
+                        <div class="calendar-header">Qua</div>
+                        <div class="calendar-header">Qui</div>
+                        <div class="calendar-header">Sex</div>
+                        <div class="calendar-header">Sáb</div>
+                        <!-- Dias do calendário serão inseridos via JavaScript -->
+                    </div>
+                </div>
 
-                <label for="time">Hora:</label>
-                <input type="time" id="time" name="time" required>
+                <div class="time-slots">
+                    <!-- Horários serão inseridos via JavaScript -->
+                </div>
 
-                <label for="employee">Funcionário:</label>
-                <select id="employee" name="employee" required>
-                    <option value="">Selecione um funcionário</option>
-                    <option value="joao">João</option>
-                    <option value="maria">Maria</option>
-                    <option value="ana">Ana</option>
-                    <option value="carlos">Carlos</option>
-                </select>
-
-                <button type="submit">Agendar</button>
-            </form>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 BEATY TECH. Todos os direitos reservados.</p>
+                <div class="professional-selector">
+                    <h2>Escolha o Profissional</h2>
+                    <div class="professional-cards">                        <div class="professional-card">
+                            <img src="assets/images/team-1.jpg" alt="Caroline Gimenes" class="professional-avatar">
+                            <div class="professional-name">Caroline Gimenes</div>
+                            <div class="professional-role">Cabeleireira Master</div>
+                        </div>
+                        <div class="professional-card">
+                            <img src="assets/images/team-3.jpg" alt="Naire" class="professional-avatar">
+                            <div class="professional-name">Naire</div>
+                            <div class="professional-role">Maquiagem</div>
+                        </div>
+                        <div class="professional-card">
+                            <img src="assets/images/team-4.jpg" alt="Amanda" class="professional-avatar">
+                            <div class="professional-name">Amanda</div>
+                            <div class="professional-role">Manicure</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p>📞 (15) 99741-1907</p>
+                    <p>✉️ contato@beautytech.com</p>
+                    <p>📍 Rua Carmelina Ferreira, 50</p>
+                    <p>Pq Jataí - Votorantim/SP</p>
+                    <p>CEP: 18117-270</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Horário de Funcionamento</h4>
+                    <p>Segunda a Sábado: 9h às 20h</p>
+                    <p>Domingo: Fechado</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>                    <div class="social-links">
+                        <a href="https://www.instagram.com/_caagimenes" class="social-link" target="_blank">Instagram</a>
+                        <a href="https://www.facebook.com/carol.kesley.2025" class="social-link" target="_blank">Facebook</a>
+                        <a href="https://wa.me/5515997411907" class="social-link" target="_blank">WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Caroline Rodrigues Beauty. Todos os direitos reservados.</p>
+            </div>
+        </div>
     </footer>
-    <script src="js/scripts.js"></script>
+
+    <script>
+        // Função para gerar o calendário
+        function generateCalendar() {
+            const calendar = document.querySelector('.calendar');
+            const today = new Date();
+            const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
+
+            // Adicionar dias vazios no início
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day';
+                calendar.appendChild(emptyDay);
+            }
+
+            // Adicionar dias do mês
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                
+                if (day < today.getDate()) {
+                    dayElement.classList.add('disabled');
+                }
+                
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        // Função para gerar horários disponíveis
+        function generateTimeSlots() {
+            const timeSlots = document.querySelector('.time-slots');
+            const startHour = 9; // 9:00
+            const endHour = 20; // 20:00
+            const interval = 30; // 30 minutos
+
+            for (let hour = startHour; hour < endHour; hour++) {
+                for (let minutes = 0; minutes < 60; minutes += interval) {
+                    const timeSlot = document.createElement('div');
+                    timeSlot.className = 'time-slot';
+                    timeSlot.textContent = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                    timeSlots.appendChild(timeSlot);
+                }
+            }
+        }
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            generateCalendar();
+            generateTimeSlots();
+
+            // Adicionar eventos de clique
+            document.querySelectorAll('.service-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                });
+            });
+
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.addEventListener('click', () => {
+                    if (!day.classList.contains('disabled')) {
+                        document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                        day.classList.add('selected');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.addEventListener('click', () => {
+                    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                    slot.classList.add('selected');
+                });
+            });
+
+            document.querySelectorAll('.professional-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.professional-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

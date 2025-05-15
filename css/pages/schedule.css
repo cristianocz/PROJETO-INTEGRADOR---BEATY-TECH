@@ -1,0 +1,251 @@
+/* Schedule page specific styles */
+.schedule-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.schedule-sidebar {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+.service-selector {
+  margin-bottom: 2rem;
+}
+
+.service-category {
+  margin-bottom: 1.5rem;
+}
+
+.service-category h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.service-option {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.service-option:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(98, 0, 238, 0.05);
+}
+
+.service-option.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(98, 0, 238, 0.1);
+}
+
+.service-option-info {
+  flex-grow: 1;
+}
+
+.service-name {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.service-duration, .service-price {
+  font-size: 0.9rem;
+  color: var(--on-surface);
+  opacity: 0.8;
+}
+
+.schedule-main {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.date-selector {
+  margin-bottom: 2rem;
+}
+
+.month-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.calendar-header {
+  font-weight: 500;
+  color: var(--primary-color);
+  padding: 0.5rem;
+}
+
+.calendar-day {
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calendar-day:hover:not(.disabled) {
+  background-color: rgba(98, 0, 238, 0.05);
+}
+
+.calendar-day.selected {
+  background-color: var(--primary-color);
+  color: var(--on-primary);
+}
+
+.calendar-day.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.time-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.time-slot {
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.time-slot:hover:not(.disabled) {
+  border-color: var(--primary-color);
+  background-color: rgba(98, 0, 238, 0.05);
+}
+
+.time-slot.selected {
+  background-color: var(--primary-color);
+  color: var(--on-primary);
+  border-color: var(--primary-color);
+}
+
+.time-slot.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.professional-selector {
+  margin-top: 2rem;
+}
+
+.professional-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.professional-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.professional-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.professional-card.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(98, 0, 238, 0.05);
+}
+
+.professional-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  object-fit: cover;
+}
+
+.professional-name {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.professional-role {
+  font-size: 0.9rem;
+  color: var(--on-surface);
+  opacity: 0.8;
+}
+
+.booking-summary {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.summary-label {
+  color: var(--on-surface);
+  opacity: 0.8;
+}
+
+.summary-value {
+  font-weight: 500;
+}
+
+.book-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.book-button:hover {
+  background-color: var(--primary-variant);
+}
+
+@media (max-width: 768px) {
+  .schedule-container {
+    grid-template-columns: 1fr;
+  }
+
+  .professional-cards {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}

@@ -1,0 +1,167 @@
+/* Clients page specific styles */
+.clients-hero {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-variant));
+  color: var(--on-primary);
+  border-radius: 16px;
+  margin: 2rem;
+  box-shadow: 0 4px 6px rgba(139, 49, 255, 0.2);
+  text-align: center;
+}
+
+.clients-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.client-form-container {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(139, 49, 255, 0.1);
+}
+
+.client-form-container h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--on-surface);
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--surface-variant);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: var(--surface);
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 49, 255, 0.1);
+}
+
+.client-list {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(139, 49, 255, 0.1);
+}
+
+.client-list h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.clients-table th,
+.clients-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--surface-variant);
+}
+
+.clients-table th {
+  font-weight: 500;
+  color: var(--primary-color);
+  background: var(--surface-variant);
+}
+
+.clients-table tr:hover {
+  background-color: var(--surface-variant);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-primary {
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-variant));
+  color: var(--on-primary);
+}
+
+.button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(139, 49, 255, 0.2);
+}
+
+.button-secondary {
+  background: var(--surface);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.button-secondary:hover {
+  background: var(--surface-variant);
+  transform: translateY(-2px);
+}
+
+.search-container {
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--surface-variant);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 49, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .clients-hero {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+  
+  .clients-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .clients-table {
+    overflow-x: auto;
+    display: block;
+  }
+  
+  .form-input {
+    font-size: 16px; /* Previne zoom em iOS */
+  }
+}

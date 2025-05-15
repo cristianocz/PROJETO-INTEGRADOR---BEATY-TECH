@@ -1,66 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head>    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funcionários - Salão de Beleza</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Funcionários - Caroline Gimenes Beauty</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/pages/employees.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Funcionários do Salão de Beleza</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="about.html">Sobre</a></li>
-                <li><a href="services.html">Serviços</a></li>
-                <li><a href="contact.html">Contato</a></li>
-                <li><a href="schedule.html">Agendar</a></li>
-                <li><a href="clients.html">Clientes</a></li>
-                <li><a href="employees.html">Funcionários</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section>
-            <h2>Cadastro de Funcionários</h2>
-            <form id="employee-form">
-                <label for="name">Nome:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="position">Cargo:</label>
-                <input type="text" id="position" name="position" required>
-
-                <label for="phone">Telefone:</label>
-                <input type="tel" id="phone" name="phone" required>
-
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
-
-                <button type="submit">Adicionar Funcionário</button>
-            </form>
+    <header class="header">
+        <div class="container">
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="about.html" class="nav-link">Sobre Nós</a>
+                <a href="services.html" class="nav-link">Serviços</a>
+                <a href="schedule.html" class="nav-link">Agendar</a>
+                <a href="clients.html" class="nav-link">Clientes</a>
+                <a href="employees.html" class="nav-link">Funcionários</a>
+                <a href="contact.html" class="nav-link">Contato</a>
+            </nav>
+        </div>
+    </header>    
+    <main class="container">
+        <section class="employees-hero">
+            <h1>Gerenciamento de Funcionários</h1>
+            <p>Cadastre e gerencie todos os profissionais do salão em um só lugar.</p>
         </section>
-        <section>
-            <h2>Lista de Funcionários</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Cargo</th>
-                        <th>Telefone</th>
-                        <th>E-mail</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="employee-list">
-                    <!-- Funcionários serão listados aqui -->
-                </tbody>
-            </table>
-        </section>
+
+        <div class="employees-content">
+            <section class="employee-form-container">
+                <h2>Novo Funcionário</h2>
+                <form id="employee-form">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Nome Completo</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="position" class="form-label">Cargo</label>
+                        <input type="text" id="position" name="position" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Telefone</label>
+                        <input type="tel" id="phone" name="phone" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+
+                    <button type="submit" class="button button-primary">Adicionar Funcionário</button>
+                </form>
+            </section>
+
+            <section class="employee-list-container">
+                <h2>Lista de Funcionários</h2>
+                
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Pesquisar funcionários...">
+                </div>
+
+                <div class="table-container">
+                    <table class="employees-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cargo</th>
+                                <th>Telefone</th>
+                                <th>E-mail</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employee-list">
+                            <!-- Lista de funcionários será inserida aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
     </main>
-    <footer>
-        <p>&copy; 2023 Salão de Beleza. Todos os direitos reservados.</p>
-    </footer>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p>📞 (11) 9999-9999</p>
+                    <p>✉️ contato@beautytech.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Horário de Funcionamento</h4>
+                    <p>Segunda a Sábado: 9h às 20h</p>
+                    <p>Domingo: Fechado</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <div class="footer-section">
+                    <h4>Redes Sociais</h4>                    <div class="social-links">
+                        <a href="https://www.instagram.com/_caagimenes" class="social-link" target="_blank">Instagram</a>
+                        <a href="https://www.facebook.com/carol.kesley.2025" class="social-link" target="_blank">Facebook</a>
+                        <a href="https://wa.me/5515997411907" class="social-link" target="_blank">WhatsApp</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Beauty Tech. Todos os direitos reservados.</p>
+            </div>
+        </div>    </footer>
     <script src="js/scripts.js"></script>
+    <script src="js/employees.js"></script>
 </body>
 </html>

@@ -3,54 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serviços - Salão de Beleza</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Serviços - Salão de Beleza</title>    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/pages/services.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <h1>Serviços Oferecidos</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="about.html">Sobre</a></li>
-                <li><a href="services.html">Serviços</a></li>
-                <li><a href="contact.html">Contato</a></li>
-                <li><a href="schedule.html">Agendar</a></li>
-                <li><a href="clients.html">Clientes</a></li>
-                <li><a href="employees.html">Funcionários</a></li>
-            </ul>
+<body>    
+    <header class="header">
+        <div class="container">
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="about.html" class="nav-link">Sobre Nós</a>
+                <a href="services.html" class="nav-link">Serviços</a>
+                <a href="schedule.html" class="nav-link">Agendar</a>
+                <a href="clients.html" class="nav-link">Clientes</a>
+                <a href="employees.html" class="nav-link">Funcionários</a>
+                <a href="contact.html" class="nav-link">Contato</a>
+            </nav>
+        </div>              
+           
         </nav>
-    </header>
-    <main>
-        <section>
-            <h2>Nossos Serviços</h2>
-            <ul>
-                <li>
-                    <h3>Corte de Cabelo</h3>
-                    <p>Descrição: Corte moderno e estiloso para todos os tipos de cabelo.</p>
-                    <p>Preço: R$ 50,00</p>
-                </li>
-                <li>
-                    <h3>Manicure</h3>
-                    <p>Descrição: Cuidados para as unhas, incluindo esmaltação e design.</p>
-                    <p>Preço: R$ 30,00</p>
-                </li>
-                <li>
-                    <h3>Massagem Relaxante</h3>
-                    <p>Descrição: Massagem para aliviar o estresse e relaxar os músculos.</p>
-                    <p>Preço: R$ 100,00</p>
-                </li>
-                <li>
-                    <h3>Tratamento Capilar</h3>
-                    <p>Descrição: Tratamento profundo para revitalizar os cabelos danificados.</p>
-                    <p>Preço: R$ 80,00</p>
-                </li>
-                <li>
-                    <h3>Depilação</h3>
-                    <p>Descrição: Depilação com cera para uma pele suave e livre de pelos.</p>
-                    <p>Preço: R$ 60,00</p>
-                </li>
-            </ul>
+    </header>    <main class="container">        <section class="services-grid">
+            <div class="service-item">
+                <h3 class="service-title">Penteado</h3>
+                <p class="service-description">Penteados elaborados para eventos e ocasiões especiais.</p>
+                <p class="service-price">R$ 250,00</p>
+                <p class="service-duration">Duração: 60 min</p>
+                <button class="button button-primary">Agendar Agora</button>
+            </div>
+            
+            <div class="service-item">
+                <h3 class="service-title">Maquiagem</h3>
+                <p class="service-description">Maquiagem profissional para eventos e ocasiões especiais.</p>
+                <p class="service-price">R$ 350,00</p>
+                <p class="service-duration">Duração: 90 min</p>
+                <button class="button button-primary">Agendar Agora</button>
+            </div>
+            
+            <div class="service-item">
+                <h3 class="service-title">Manicure</h3>
+                <p class="service-description">Cuidados para as unhas, incluindo esmaltação e design.</p>
+                <p class="service-price">R$ 30,00</p>
+                <p class="service-duration">Duração: 30 min</p>
+                <button class="button button-primary">Agendar Agora</button>
+            </div>
+            
+            <div class="service-item">
+                <h3 class="service-title">Massagem Relaxante</h3>
+                <p class="service-description">Massagem para aliviar o estresse e relaxar os músculos.</p>
+                <p class="service-price">R$ 100,00</p>
+                <p class="service-duration">Duração: 60 min</p>
+                <button class="button button-primary">Agendar Agora</button>
+            </div>
+            
+            <div class="service-item">
+                <h3 class="service-title">Tratamento Capilar</h3>
+                <p class="service-description">Tratamento profundo para revitalizar os cabelos danificados.</p>
+                <p class="service-price">R$ 80,00</p>
+                <p class="service-duration">Duração: 45 min</p>
+                <button class="button button-primary">Agendar Agora</button>
+            </div>
+            
+            <div class="service-item">
+                <h3 class="service-title">Depilação</h3>
+                <p class="service-description">Depilação com cera para uma pele suave e livre de pelos.</p>
+                <p class="service-price">R$ 60,00</p>
+                <p class="service-duration">Duração: 40 min</p>
+                <button class="button button-primary">Agendar Agora</button>
+            </div>
         </section>
     </main>
     <footer>

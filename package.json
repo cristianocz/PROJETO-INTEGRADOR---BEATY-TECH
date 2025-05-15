@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.3"
+  },
+  "name": "projeto-integrador---beaty-tech",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server . -p 8081 -c-1 --cors -o /index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristianocz/PROJETO-INTEGRADOR---BEATY-TECH.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristianocz/PROJETO-INTEGRADOR---BEATY-TECH/issues"
+  },
+  "homepage": "https://github.com/cristianocz/PROJETO-INTEGRADOR---BEATY-TECH#readme"
+}

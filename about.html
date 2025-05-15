@@ -1,47 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Nós - Salão de Beleza</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Sobre Nós - Caroline Gimenes Beauty</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/pages/about.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Sobre Nós</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="services.html">Serviços</a></li>
-                <li><a href="schedule.html">Agendar</a></li>
-                <li><a href="clients.html">Clientes</a></li>
-                <li><a href="employees.html">Funcionários</a></li>
-                <li><a href="contact.html">Contato</a></li>
-            </ul>
-        </nav>
+    <header class="header">
+        <div class="container">
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="about.html" class="nav-link">Sobre Nós</a>
+                <a href="services.html" class="nav-link">Serviços</a>
+                <a href="schedule.html" class="nav-link">Agendar</a>
+                <a href="clients.html" class="nav-link">Clientes</a>
+                <a href="employees.html" class="nav-link">Funcionários</a>
+                <a href="contact.html" class="nav-link">Contato</a>
+            </nav>
+        </div>
     </header>
-    <main>
-        <section>
-            <h2>Nossa História</h2>
-            <p>O nosso salão de beleza foi fundado em [ano] com a missão de proporcionar aos nossos clientes uma experiência única de beleza e bem-estar. Desde então, temos nos dedicado a oferecer serviços de alta qualidade e um atendimento excepcional.</p>
+
+    <main class="container">
+        <section class="about-hero">
+            <h1>Nossa História</h1>
+            <p>Desde 2020, transformando vidas através da beleza e do bem-estar.</p>
         </section>
-        <section>
-            <h2>Missão</h2>
-            <p>Nosso objetivo é realçar a beleza de cada cliente, proporcionando um ambiente acolhedor e profissionais qualificados que entendem as necessidades individuais.</p>
+
+        <section class="about-content">
+            <div class="about-card">
+                <h3>Nossa Missão</h3>
+                <p>Proporcionar experiências únicas de beleza e bem-estar, transformando a autoestima de nossos clientes através de serviços de alta qualidade e atendimento personalizado.</p>
+            </div>
+
+            <div class="about-card">
+                <h3>Nossa Visão</h3>
+                <p>Ser reconhecido como o salão de beleza mais inovador e acolhedor da região, referência em qualidade de serviços e satisfação do cliente.</p>
+            </div>
+
+            <div class="about-card">
+                <h3>Nossos Valores</h3>
+                <p>
+                    • Excelência em atendimento<br>
+                    • Inovação constante<br>
+                    • Compromisso com resultados<br>
+                    • Responsabilidade social<br>
+                    • Valorização das pessoas
+                </p>
+            </div>
         </section>
+
         <section>
-            <h2>Valores</h2>
-            <ul>
-                <li>Qualidade</li>
-                <li>Atendimento ao Cliente</li>
-                <li>Inovação</li>
-                <li>Respeito</li>
-                <li>Sustentabilidade</li>
-            </ul>
+            <h2>Nossa Equipe</h2>
+            <div class="team-grid">                <div class="team-member">
+                    <img src="assets/images/team-1.jpg" alt="Caroline Gimenes">
+                    <h3 class="member-name">Caroline Gimenes</h3>
+                    <p class="member-role">Cabeleireira Master</p>
+                    <p>Especialista em coloração e cortes modernos</p>
+                </div>
+
+                <div class="team-member">
+                    <img src="assets/images/team-3.jpg" alt="Naire">
+                    <h3 class="member-name">Naire</h3>
+                    <p class="member-role">Esteticista</p>
+                    <p>Especialista em tratamentos faciais</p>
+                </div>
+
+                <div class="team-member">
+                    <img src="assets/images/team-4.jpg" alt="Amanda">
+                    <h3 class="member-name">Amanda</h3>
+                    <p class="member-role">Manicure</p>
+                    <p>Especialista em nail art e alongamento</p>
+                </div>
+            </div>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2023 Salão de Beleza. Todos os direitos reservados.</p>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">                <div class="footer-section">                    <h4>Contato</h4>
+                    <p>📞 (15) 99741-1907</p>
+                    <p>✉️ carolinemunhoz1601@gmail.com</p>
+                    <p>📍 Rua Carmelina Ferreira, 50</p>
+                    <p>Pq Jataí - Votorantim/SP</p>
+                    <p>CEP: 18117-270</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Horário de Funcionamento</h4>
+                    <p>Segunda a Sábado: 9h às 20h</p>
+                    <p>Domingo: Fechado</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>                    <div class="social-links">
+                        <a href="https://www.instagram.com/_caagimenes" class="social-link" target="_blank">Instagram</a>
+                        <a href="https://www.facebook.com/carol.kesley.2025" class="social-link" target="_blank">Facebook</a>
+                        <a href="https://wa.me/5515997411907" class="social-link" target="_blank">WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Beauty Tech. Todos os direitos reservados.</p>
+            </div>
+        </div>
     </footer>
 </body>
 </html>
