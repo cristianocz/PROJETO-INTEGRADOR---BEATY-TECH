@@ -1,0 +1,192 @@
+/* Estilos do calendário */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    padding: 4px;
+    background: var(--surface);
+    border-radius: 8px;
+}
+
+.calendar-header {
+    padding: 8px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    font-weight: 500;
+}
+
+.calendar-day:hover:not(.disabled) {
+    background-color: var(--surface-variant);
+    transform: translateY(-2px);
+}
+
+.calendar-day.disabled {
+    color: var(--on-surface-disabled);
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.calendar-day.selected {
+    background-color: var(--primary-color);
+    color: var(--on-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-day.today {
+    border: 2px solid var(--primary-color);
+}
+
+.calendar-day.has-appointments::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+/* Estilos dos horários */
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--surface);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.time-slot {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    background: var(--surface);
+}
+
+.time-slot:hover:not(.occupied) {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.time-slot.selected {
+    background-color: var(--primary-color);
+    color: var(--on-primary);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.time-slot.occupied {
+    background-color: var(--surface-variant);
+    color: var(--on-surface-disabled);
+    cursor: not-allowed;
+    border-color: transparent;
+}
+
+/* Estilos dos profissionais */
+.professional-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.professional-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.professional-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.professional-card.selected {
+    border-color: var(--primary-color);
+    background-color: rgba(98, 0, 238, 0.05);
+}
+
+.professional-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    display: block; /* Garante que a imagem seja exibida como bloco */
+    background-color: var(--surface-variant); /* Cor de fundo enquanto a imagem carrega */
+}
+
+.professional-name {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--on-surface);
+}
+
+.professional-role {
+    font-size: 0.875rem;
+    color: var(--on-surface-variant);
+}
+
+/* Estilos do resumo */
+.booking-summary {
+    border-top: 2px solid var(--border-color);
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: var(--surface-variant);
+    border-radius: 6px;
+}
+
+.book-button:disabled {
+    background-color: var(--surface-variant);
+    color: var(--on-surface-disabled);
+    cursor: not-allowed;
+}
+
+/* Estilos para mensagem de horários indisponíveis */
+.no-slots-message {
+    padding: 1rem;
+    text-align: center;
+    color: var(--on-surface);
+    background-color: var(--surface-variant);
+    border-radius: 8px;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}

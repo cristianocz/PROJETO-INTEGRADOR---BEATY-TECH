@@ -18,13 +18,18 @@
   /* Cores de erro e sucesso */
   --error: #CF6679;                  /* Vermelho suave */
   --success: #4CAF50;               /* Verde */
-  
+  --warning: #FFB74D;                /* Laranja para avisos */
+  --info: #29B6F6;                   /* Azul para informações */
+
   /* Cores de texto */
   --on-primary: #FFFFFF;             /* Texto sobre cor primária */
   --on-secondary: #3C1053;          /* Texto sobre cor secundária mais escuro */
   --on-background: #2D1B3E;         /* Texto sobre fundo mais escuro */
   --on-surface: #1D1B20;            /* Texto sobre superfície */
   --on-error: #FFFFFF;              /* Texto sobre erro */
+  --on-success: #FFFFFF;            /* Texto sobre sucesso */
+  --on-warning: #000000;            /* Texto sobre avisos */
+  --on-info: #000000;               /* Texto sobre informações */
   
   /* Gradientes */
   --gradient-primary: linear-gradient(135deg, #8B31FF, #6B0FD2);

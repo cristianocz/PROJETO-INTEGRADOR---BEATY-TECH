@@ -26,11 +26,12 @@
 .client-form-container h2 {
   color: var(--primary-color);
   margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .form-group {
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .form-label {
@@ -38,6 +39,7 @@
   margin-bottom: 0.5rem;
   color: var(--on-surface);
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .form-input {
@@ -45,7 +47,7 @@
   padding: 0.75rem;
   border: 2px solid var(--surface-variant);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
   background: var(--surface);
 }
@@ -54,6 +56,17 @@
   border-color: var(--primary-color);
   outline: none;
   box-shadow: 0 0 0 3px rgba(139, 49, 255, 0.1);
+}
+
+.form-input.error {
+  border-color: var(--error-color);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  min-height: 1rem;
 }
 
 .client-list {
@@ -117,26 +130,24 @@
 }
 
 .button-secondary {
-  background: var(--surface);
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  background-color: var(--surface-variant);
+  color: var(--on-surface);
 }
 
 .button-secondary:hover {
-  background: var(--surface-variant);
-  transform: translateY(-2px);
+  background-color: var(--surface-variant-hover);
 }
 
 .search-container {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .search-input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem;
   border: 2px solid var(--surface-variant);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
 }
 
@@ -146,22 +157,230 @@
   box-shadow: 0 0 0 3px rgba(139, 49, 255, 0.1);
 }
 
-@media (max-width: 768px) {
-  .clients-hero {
-    padding: 2rem 1rem;
-    margin: 1rem;
-  }
-  
-  .clients-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .clients-table {
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: var(--surface);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(139, 49, 255, 0.2);
+    animation: slideIn 0.3s ease;
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: var(--primary-variant);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Loading indicator */
+#loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Table improvements */
+.table-container {
     overflow-x: auto;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+}
+
+.data-table th {
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.data-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--surface-variant);
+    white-space: normal;
+    word-break: break-word;
+}
+
+.data-table tr:hover {
+    background-color: var(--surface-variant-hover);
+}
+
+/* Action buttons in table */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.action-button {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--on-surface);
+}
+
+.edit-button {
+    background-color: var(--primary-color);
+    color: var(--on-primary);
+}
+
+.delete-button {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.action-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Edit Popup Styles */
+/* Estilos para o popup de edição */
+.edit-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.popup-content h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
     display: block;
-  }
-  
-  .form-input {
-    font-size: 16px; /* Previne zoom em iOS */
-  }
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--border);
+    color: var(--text);
+}
+
+.error-message {
+    color: var(--error);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Responsive improvements */
+@media screen and (max-width: 768px) {
+    .clients-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .data-table {
+        font-size: 0.9rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .button {
+        width: 100%;
+    }
 }
