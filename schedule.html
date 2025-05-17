@@ -5,7 +5,8 @@
     <title>Agendamento - Caroline Gimenes Beauty</title>    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/pages/schedule.css">
-    <link rel="stylesheet" href="css/components/schedule.css">    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/components/schedule.css">
+    <link rel="stylesheet" href="css/components/client-selector.css"><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="js/services/agendamento.js" defer></script>
     <script src="js/services/client.js" defer></script>
@@ -82,7 +83,17 @@
                 </div>
 
                 <div class="booking-summary">
+                    <h2>Selecione o Cliente</h2>
+                    <div class="client-selector">
+                        <input type="text" id="client-search" placeholder="Buscar cliente..." class="search-input">
+                        <div class="client-list" style="display: none;"></div>
+                    </div>
+
                     <h3>Resumo do Agendamento</h3>
+                    <div class="summary-item">
+                        <span class="summary-label">Cliente:</span>
+                        <span class="summary-value client-value">-</span>
+                    </div>
                     <div class="summary-item">
                         <span class="summary-label">Serviço:</span>
                         <span class="summary-value">-</span>

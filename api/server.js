@@ -310,15 +310,24 @@ app.get('/funcionarios/:id', async (req, res, next) => {
 // Rotas de Agendamento
 app.post('/agendamentos', async (req, res, next) => {
   try {
+    console.log('Recebendo requisição de agendamento:', req.body);
     const { clienteId, funcionarioId, servico, data, horario, duracao } = req.body;
 
     // Validação básica dos campos
     if (!clienteId || !funcionarioId || !servico || !data || !horario || !duracao) {
+      console.log('Campos faltando:', { clienteId, funcionarioId, servico, data, horario, duracao });
       return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    // Validar o formato da duração
+    if (typeof duracao !== 'number' || duracao <= 0) {
+      console.log('Duração inválida:', duracao);
+      return res.status(400).json({ message: 'Duração inválida' });
     }
 
     // Validar IDs de MongoDB
     if (!mongoose.Types.ObjectId.isValid(clienteId) || !mongoose.Types.ObjectId.isValid(funcionarioId)) {
+      console.log('IDs inválidos:', { clienteId, funcionarioId });
       return res.status(400).json({ message: 'ID de cliente ou funcionário inválido' });
     }
 
@@ -332,37 +341,9 @@ app.post('/agendamentos', async (req, res, next) => {
       return res.status(404).json({ 
         message: !cliente ? 'Cliente não encontrado' : 'Funcionário não encontrado' 
       });
-    }    // Verificar se já existe agendamento no mesmo horário para o funcionário
+    }    // Normalizar a data para início do dia
     const dataAgendamento = new Date(data);
-    dataAgendamento.setHours(0, 0, 0, 0);  // Normalizar a data para início do dia
-    
-    const [horaInicio, minutoInicio] = horario.split(':').map(Number);
-    const inicioMinutos = horaInicio * 60 + minutoInicio;
-    const fimMinutos = inicioMinutos + duracao;
-    
-    const agendamentoExistente = await Agendamento.find({
-      funcionario: funcionarioId,
-      data: dataAgendamento,
-      status: 'agendado'
-    });
-    
-    // Verificar sobreposição de horários
-    const temConflito = agendamentoExistente.some(agend => {
-      const [h, m] = agend.horario.split(':').map(Number);
-      const agendInicioMinutos = h * 60 + m;
-      const agendFimMinutos = agendInicioMinutos + agend.duracao;
-      
-      // Verifica se há sobreposição
-      return (inicioMinutos < agendFimMinutos && fimMinutos > agendInicioMinutos);
-    });
-    
-    if (temConflito) {
-      return res.status(400).json({ message: 'Horário não disponível' });
-    }
-
-    if (agendamentoExistente) {
-      return res.status(400).json({ message: 'Horário não disponível' });
-    }
+    dataAgendamento.setHours(0, 0, 0, 0);
 
     const agendamento = new Agendamento({
       cliente: clienteId,
@@ -463,9 +444,7 @@ app.get('/agendamentos/disponibilidade', async (req, res, next) => {
     const dataInicio = new Date(data);
     dataInicio.setHours(0, 0, 0, 0);
     const dataFim = new Date(dataInicio);
-    dataFim.setHours(23, 59, 59, 999);
-
-    // Buscar todos os agendamentos do funcionário para o dia
+    dataFim.setHours(23, 59, 59, 999);    // Buscar todos os agendamentos do funcionário para o dia
     const agendamentos = await Agendamento.find({
       funcionario: funcionarioId,
       data: {
@@ -475,16 +454,24 @@ app.get('/agendamentos/disponibilidade', async (req, res, next) => {
       status: 'agendado'
     }).select('horario duracao');
 
+    console.log('Agendamentos encontrados:', agendamentos);
+
     // Criar um mapa de horários ocupados
     const horariosOcupados = new Map();
     agendamentos.forEach(agendamento => {
       const [horas, minutos] = agendamento.horario.split(':').map(Number);
       const startMinutes = horas * 60 + minutos;
+      const endMinutes = startMinutes + agendamento.duracao;
       
       // Marcar cada intervalo de 30 minutos dentro da duração do agendamento como ocupado
-      for (let i = 0; i < agendamento.duracao; i += 30) {
-        const slot = minutesToTime(startMinutes + i);
+      for (let i = startMinutes; i < endMinutes; i += 30) {
+        const slot = minutesToTime(i);
         horariosOcupados.set(slot, true);
+        
+        // Se o próximo slot começa antes do fim do agendamento, marcar como ocupado também
+        if (i + 30 < endMinutes) {
+          horariosOcupados.set(minutesToTime(i + 30), true);
+        }
       }
     });
 

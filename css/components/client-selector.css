@@ -1,0 +1,54 @@
+.client-selector {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.client-selector .search-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--surface-variant);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: var(--surface);
+}
+
+.client-selector .search-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(139, 49, 255, 0.1);
+}
+
+.client-selector .client-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid var(--surface-variant);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.client-selector .client-list .client-item {
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.client-selector .client-list .client-item:hover {
+    background-color: var(--surface-variant);
+}
+
+.client-selector .client-list .client-item .client-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.client-selector .client-list .client-item .client-info {
+    font-size: 0.85rem;
+    color: var(--on-surface-variant);
+}

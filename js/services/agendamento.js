@@ -1,3 +1,6 @@
+// URL base da API
+const API_URL = 'http://localhost:3001';
+
 // Classe para gerenciar a comunicação com a API
 class AgendamentoService {    constructor(baseUrl = 'http://localhost:3001') {
         this.baseUrl = baseUrl;
@@ -76,53 +79,28 @@ class AgendamentoService {    constructor(baseUrl = 'http://localhost:3001') {
             throw new Error('Erro ao buscar funcionários');
         }
         return await response.json();
-    }
-
-    async verificarDisponibilidade(data, funcionarioId) {
+    }    async verificarDisponibilidade(data, funcionarioId) {
+        // Retorna um Set vazio, indicando que todos os horários estão disponíveis
+        return new Set();
+    }    async getHorariosDisponiveis(data, funcionarioId, duracaoServico) {
         try {
-            const response = await fetch(`${this.baseUrl}/agendamentos/disponibilidade?data=${data}&funcionarioId=${funcionarioId}`);
-            if (!response.ok) {
-                throw new Error('Erro ao verificar disponibilidade');
-            }
-            const { horariosOcupados } = await response.json();
-            return new Set(horariosOcupados);
-        } catch (error) {
-            console.error('Erro ao verificar disponibilidade:', error);
-            throw error;
-        }
-    }
-
-    async getHorariosDisponiveis(data, funcionarioId, duracaoServico) {
-        const horariosOcupados = await this.verificarDisponibilidade(data, funcionarioId);
-        const horarios = [];
-        
-        const inicioExpediente = 9; // 9:00
-        const fimExpediente = 20; // 20:00
-        const intervalo = 30; // 30 minutos
-        
-        for (let hora = inicioExpediente; hora < fimExpediente; hora++) {
-            for (let minuto = 0; minuto < 60; minuto += intervalo) {
-                const horario = `${String(hora).padStart(2, '0')}:${String(minuto).padStart(2, '0')}`;
-                
-                // Verificar se o horário + duração do serviço está disponível
-                let disponivel = true;
-                const inicioMinutos = hora * 60 + minuto;
-                
-                for (let i = 0; i < duracaoServico; i += intervalo) {
-                    const horarioVerificar = this.minutosParaHorario(inicioMinutos + i);
-                    if (horariosOcupados.has(horarioVerificar)) {
-                        disponivel = false;
-                        break;
-                    }
-                }
-                
-                if (disponivel) {
+            const horarios = [];
+            const inicioExpediente = 9; // 9:00
+            const fimExpediente = 20; // 20:00
+            const intervalo = 30; // 30 minutos
+            
+            for (let hora = inicioExpediente; hora < fimExpediente; hora++) {
+                for (let minuto = 0; minuto < 60; minuto += intervalo) {
+                    const horario = `${String(hora).padStart(2, '0')}:${String(minuto).padStart(2, '0')}`;
                     horarios.push(horario);
                 }
             }
+            
+            return horarios;
+        } catch (error) {
+            console.error('Erro ao obter horários disponíveis:', error);
+            throw error;
         }
-        
-        return horarios;
     }
 
     minutosParaHorario(minutos) {
@@ -140,7 +118,8 @@ class AgendamentoState {
         this.selectedProfessional = null;
         this.selectedDate = null;
         this.selectedTime = null;
-        this.clientId = "6827a08a0744a2885ace08e7"; // ID do cliente Maria Silva
+        this.selectedClient = null;
+        this.initialized = false;
     }
 
     isValid() {
@@ -148,38 +127,53 @@ class AgendamentoState {
                this.selectedProfessional && 
                this.selectedDate && 
                this.selectedTime && 
-               this.clientId;
-    }
+               this.selectedClient;
+    }    updateUI() {
+        // Selecionar os elementos usando os elementos pai
+        const summaryContainer = document.querySelector('.booking-summary');
+        if (!summaryContainer) return;
 
-    updateUI() {
-        const summaryService = document.querySelector('.summary-value:nth-child(2)');
-        const summaryProfessional = document.querySelector('.summary-value:nth-child(4)');
-        const summaryDate = document.querySelector('.summary-value:nth-child(6)');
-        const summaryTime = document.querySelector('.summary-value:nth-child(8)');
-        const summaryTotal = document.querySelector('.summary-value:nth-child(10)');
-        const bookButton = document.querySelector('.book-button');
+        const summaryElements = summaryContainer.querySelectorAll('.summary-item');
+        const summaryClient = summaryContainer.querySelector('.client-value');
+        const summaryService = summaryElements[1]?.querySelector('.summary-value');
+        const summaryProfessional = summaryElements[2]?.querySelector('.summary-value');
+        const summaryDate = summaryElements[3]?.querySelector('.summary-value');
+        const summaryTime = summaryElements[4]?.querySelector('.summary-value');
+        const summaryTotal = summaryElements[5]?.querySelector('.summary-value');
+        const bookButton = summaryContainer.querySelector('.book-button');
 
+        // Atualizar os valores        
+        if (summaryClient) summaryClient.textContent = this.selectedClient ? this.selectedClient.nome : '-';
         if (summaryService) summaryService.textContent = this.selectedService ? this.selectedService.name : '-';
-        if (summaryProfessional) summaryProfessional.textContent = this.selectedProfessional ? this.selectedProfessional.name : '-';
-        if (summaryDate) summaryDate.textContent = this.selectedDate ? new Date(this.selectedDate).toLocaleDateString() : '-';
+        if (summaryProfessional) summaryProfessional.textContent = this.selectedProfessional ? this.selectedProfessional.name : '-';        if (summaryDate && this.selectedDate) {
+            const date = new Date(this.selectedDate + 'T12:00:00');
+            summaryDate.textContent = date.toLocaleDateString();
+        } else if (summaryDate) {
+            summaryDate.textContent = '-';
+        }
         if (summaryTime) summaryTime.textContent = this.selectedTime || '-';
         if (summaryTotal) summaryTotal.textContent = this.selectedService ? `R$ ${this.selectedService.preco.toFixed(2)}` : 'R$ 0,00';
 
+        // Habilitar/desabilitar o botão de agendamento
         if (bookButton) bookButton.disabled = !this.isValid();
-    }
-
-    async createAppointment() {
+    }    async createAppointment() {
         if (!this.isValid()) {
             throw new Error('Preencha todos os campos necessários');
         }
 
+        // Extrai a duração do texto "XX min" para número
+        const duracao = parseInt(this.selectedService.duration.toString().replace('min', ''));
+        if (isNaN(duracao)) {
+            throw new Error('Duração do serviço inválida');
+        }
+
         const appointmentData = {
-            clienteId: this.clientId,
+            clienteId: this.selectedClient._id,
             funcionarioId: this.selectedProfessional.id,
             servico: this.selectedService.name,
             data: this.selectedDate,
             horario: this.selectedTime,
-            duracao: this.selectedService.duration
+            duracao: duracao
         };
 
         const response = await this.service.criarAgendamento(appointmentData);
@@ -192,6 +186,7 @@ class AgendamentoState {
         this.selectedProfessional = null;
         this.selectedDate = null;
         this.selectedTime = null;
+        this.selectedClient = null;
         this.updateUI();
     }
 }
@@ -201,14 +196,17 @@ const state = new AgendamentoState();
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // ID do cliente para teste
-        state.clientId = "6827728154b079a8de56f5b8";
-
         // Setup dos event listeners
         setupServiceListeners();
-        setupProfessionalListeners();
+        await setupProfessionalCards(); // Primeiro carrega os funcionários
         setupDateListeners();
+        setupClientSearch();
         setupBookingButton();
+        setupClientListeners();
+        setupClientSearch();
+        
+        // Carregar profissionais
+        await setupProfessionalCards();
     } catch (error) {
         console.error('Erro ao inicializar:', error);
     }
@@ -223,13 +221,19 @@ function setupServiceListeners() {
 
             const serviceName = option.querySelector('.service-name').textContent;
             const durationText = option.querySelector('.service-duration').textContent;
-            const duration = parseInt(durationText);
+            const duration = parseInt(durationText.replace('min', '')); // Remove 'min' e converte para número
             const priceText = option.querySelector('.service-price').textContent;
             const preco = parseFloat(priceText.replace('R$ ', '').replace(',', '.'));
 
+            console.log('Serviço selecionado:', {
+                name: serviceName,
+                duration: duration,
+                preco: preco
+            });
+
             state.selectedService = { 
                 name: serviceName, 
-                duration: duration,
+                duration: duration, // Agora é um número puro
                 preco: preco
             };
             
@@ -265,9 +269,57 @@ function setupProfessionalListeners() {
     });
 }
 
+async function setupProfessionalCards() {
+    try {
+        const response = await fetch(`${API_URL}/funcionarios`);
+        if (!response.ok) {
+            throw new Error('Erro ao buscar funcionários');
+        }
+        
+        const funcionarios = await response.json();
+        const cardsContainer = document.querySelector('.professional-cards');
+        cardsContainer.innerHTML = ''; // Limpa o container
+
+        funcionarios.forEach(funcionario => {
+            const card = document.createElement('div');
+            card.className = 'professional-card';
+            card.dataset.id = funcionario._id;
+            
+            // Determina a imagem baseado na especialidade
+            let imagemSrc = 'assets/team-1.png'; // imagem padrão
+            if (funcionario.especialidade.toLowerCase().includes('maquiagem')) {
+                imagemSrc = 'assets/team-3.png';
+            } else if (funcionario.especialidade.toLowerCase().includes('manicure')) {
+                imagemSrc = 'assets/team-4.png';
+            } else if (funcionario.especialidade.toLowerCase().includes('estetic')) {
+                imagemSrc = 'assets/team-5.png';
+            }
+
+            card.innerHTML = `
+                <img src="${imagemSrc}" alt="${funcionario.nome}" class="professional-avatar">
+                <div class="professional-name">${funcionario.nome}</div>
+                <div class="professional-role">${funcionario.especialidade}</div>
+            `;
+            
+            cardsContainer.appendChild(card);
+        });
+
+        // Reaplica os event listeners nos novos cards
+        setupProfessionalListeners();
+    } catch (error) {
+        console.error('Erro ao carregar funcionários:', error);
+        const cardContainer = document.querySelector('.professional-cards');
+        if (cardContainer) {
+            cardContainer.innerHTML = '<p class="error-message">Erro ao carregar funcionários. Por favor, recarregue a página.</p>';
+        }
+    }
+}
+
 function setupDateListeners() {
     const calendar = document.querySelector('.calendar');
-    const today = new Date();    calendar.addEventListener('click', async (event) => {
+    const today = new Date();
+    
+    calendar.addEventListener('click', async (event) => {
         const dayElement = event.target.closest('.calendar-day');
         if (!dayElement || dayElement.classList.contains('disabled')) return;
 
@@ -285,14 +337,106 @@ function setupDateListeners() {
             'Maio': 4, 'Junho': 5, 'Julho': 6, 'Agosto': 7,
             'Setembro': 8, 'Outubro': 9, 'Novembro': 10, 'Dezembro': 11
         };
-        
-        const date = new Date(parseInt(year), months[month], day);
-        state.selectedDate = date.toISOString().split('T')[0];
-        state.selectedTime = null; // Reset do horário quando muda a data
+
+        // Criar a data mantendo o dia correto no fuso horário local
+        const date = new Date(parseInt(year), months[month], day, 12, 0, 0, 0);
+        const localFormattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        state.selectedDate = localFormattedDate;
+        state.selectedTime = null;
         state.updateUI();
 
         if (state.selectedProfessional) {
             await updateAvailableTimeSlots();
+        }
+    });
+}
+
+function setupClientListeners() {
+    document.querySelectorAll('.client-option').forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.client-option').forEach(opt => 
+                opt.classList.remove('selected'));
+            option.classList.add('selected');
+
+            const clientId = option.dataset.id;
+            const clientName = option.querySelector('.client-name').textContent;
+
+            state.selectedClient = { 
+                _id: clientId,
+                nome: clientName
+            };
+            
+            state.updateUI();
+
+            // Atualizar horários disponíveis em tempo real
+            if (state.selectedProfessional && state.selectedDate) {
+                updateAvailableTimeSlots();
+            }
+        });
+    });
+}
+
+function setupClientSearch() {
+    const searchInput = document.getElementById('client-search');
+    const clientList = document.querySelector('.client-list');
+    let debounceTimeout;
+
+    if (!searchInput || !clientList) return;
+
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(async () => {
+            const query = searchInput.value.trim();
+            
+            if (query.length < 2) {
+                clientList.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${state.service.baseUrl}/clientes/search?q=${encodeURIComponent(query)}`);
+                if (!response.ok) throw new Error('Erro ao buscar clientes');
+                
+                const clients = await response.json();
+                
+                clientList.innerHTML = '';
+                clients.forEach(client => {
+                    const item = document.createElement('div');
+                    item.className = 'client-item';
+                    item.innerHTML = `
+                        <div class="client-name">${client.nome}</div>
+                        <div class="client-info">${client.telefone}</div>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        state.selectedClient = client;
+                        searchInput.value = client.nome;
+                        clientList.style.display = 'none';
+                        state.updateUI();
+                    });
+                    
+                    clientList.appendChild(item);
+                });
+                
+                clientList.style.display = clients.length > 0 ? 'block' : 'none';
+            } catch (error) {
+                console.error('Erro ao buscar clientes:', error);
+                clientList.style.display = 'none';
+            }
+        }, 300);
+    });
+
+    // Esconder a lista quando clicar fora
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !clientList.contains(e.target)) {
+            clientList.style.display = 'none';
+        }
+    });
+
+    // Mostrar a lista ao focar no input
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.length >= 2) {
+            clientList.style.display = 'block';
         }
     });
 }
@@ -312,27 +456,15 @@ async function updateAvailableTimeSlots() {
         const timeSlots = document.querySelector('.time-slots');
         timeSlots.innerHTML = '';
 
-        if (horariosDisponiveis.length === 0) {
-            const message = document.createElement('div');
-            message.className = 'no-slots-message';
-            message.textContent = 'Não há horários disponíveis para este dia';
-            timeSlots.appendChild(message);
-            return;
-        }
-
         horariosDisponiveis.forEach(horario => {
-            const startTime = horario;
-            const endTime = minutesToTime(timeToMinutes(horario) + state.selectedService.duration);
-            
             const timeSlot = document.createElement('div');
             timeSlot.className = 'time-slot';
-            timeSlot.textContent = `${startTime} - ${endTime}`;
-
+            timeSlot.textContent = horario;
             timeSlot.addEventListener('click', () => {
                 document.querySelectorAll('.time-slot').forEach(slot => 
                     slot.classList.remove('selected'));
                 timeSlot.classList.add('selected');
-                state.selectedTime = startTime;
+                state.selectedTime = horario;
                 state.updateUI();
             });
 
@@ -355,9 +487,10 @@ function setupBookingButton() {
         }
 
         try {
-            const endTime = minutesToTime(timeToMinutes(state.selectedTime) + state.selectedService.duration);
-            const confirmacao = confirm(
-                `Confirmar agendamento?\n\n` +
+            const endTime = minutesToTime(timeToMinutes(state.selectedTime) + state.selectedService.duration);            const confirmacao = await showConfirmDialog(
+                'Confirmar Agendamento',
+                `Cliente: ${state.selectedClient.nome}\n` +
+                `Telefone: ${state.selectedClient.telefone}\n` +
                 `Serviço: ${state.selectedService.name}\n` +
                 `Profissional: ${state.selectedProfessional.name}\n` +
                 `Data: ${new Date(state.selectedDate).toLocaleDateString()}\n` +
@@ -479,10 +612,7 @@ function updateTimeSlotDisplay(occupiedSlots) {
             const timeSlot = document.createElement('div');
             timeSlot.className = 'time-slot';
             
-            if (occupiedSlots.has(timeString)) {
-                timeSlot.classList.add('occupied');
-                timeSlot.title = 'Horário não disponível';
-            } else {
+        
                 timeSlot.addEventListener('click', () => {
                     document.querySelectorAll('.time-slot').forEach(slot => 
                         slot.classList.remove('selected'));
@@ -490,7 +620,6 @@ function updateTimeSlotDisplay(occupiedSlots) {
                     state.selectedTime = timeString;
                     state.updateUI();
                 });
-            }
             
             timeSlot.textContent = timeString;
             timeSlots.appendChild(timeSlot);
