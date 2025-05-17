@@ -135,6 +135,17 @@
             </div>
         </div>
     </footer>
-    <script src="js/scripts.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contactForm");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+      window.location.href = "index.html";
+    });
+  });
+</script>
 </body>
 </html>
