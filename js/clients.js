@@ -1,5 +1,5 @@
 // URL base da API
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3001';
 
 // Funções de validação
 function validateEmail(email) {
@@ -84,16 +84,27 @@ function formatPhone(input) {
 
 // Função para carregar a lista de clientes
 async function loadClients() {
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const tableBody = document.getElementById('client-list');
+    
     try {
+        if (loadingIndicator) loadingIndicator.style.display = 'block';
+        if (tableBody) tableBody.style.opacity = '0.5';
+
         const response = await fetch(`${API_URL}/clientes`);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`Erro ao carregar clientes: ${response.statusText}`);
         }
+        
         const clients = await response.json();
         displayClients(clients);
     } catch (error) {
         console.error('Erro ao carregar clientes:', error);
-        alert('Erro ao carregar clientes. Por favor, tente novamente.');
+        const errorMessage = error.message || 'Erro ao carregar clientes. Por favor, tente novamente.';
+        showError(document.querySelector('.client-list'), errorMessage);
+    } finally {
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+        if (tableBody) tableBody.style.opacity = '1';
     }
 }
 
@@ -451,4 +462,69 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+}
+
+// Função para mostrar popup de edição
+function showEditPopup(client) {
+    const popup = document.createElement('div');
+    popup.className = 'edit-popup';
+    popup.innerHTML = `
+        <div class="popup-content">
+            <h2>Editar Cliente</h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" value="${client.nome}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="${client.email}" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" name="telefone" value="${client.telefone}" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="button" class="btn-secondary" onclick="closePopup()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    const form = popup.querySelector('#editForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`http://localhost:3001/clientes/${client._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nome: form.nome.value,
+                    email: form.email.value,
+                    telefone: form.telefone.value
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar cliente');
+            }
+
+            loadClients(); // Recarrega a lista
+            closePopup();
+        } catch (error) {
+            alert('Erro ao atualizar cliente: ' + error.message);
+        }
+    });
+}
+
+function closePopup() {
+    const popup = document.querySelector('.edit-popup');
+    if (popup) {
+        popup.remove();
+    }
 }

@@ -1,5 +1,5 @@
 // URL base da API
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3001';
 
 // Funções de validação
 function validateEmail(email) {
@@ -93,13 +93,27 @@ function formatPhone(input) {
 
 // Função para carregar a lista de funcionários
 async function loadEmployees() {
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const tableBody = document.getElementById('employee-list');
+    
     try {
+        if (loadingIndicator) loadingIndicator.style.display = 'block';
+        if (tableBody) tableBody.style.opacity = '0.5';
+
         const response = await fetch(`${API_URL}/funcionarios`);
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar funcionários: ${response.statusText}`);
+        }
+        
         const employees = await response.json();
         displayEmployees(employees);
     } catch (error) {
         console.error('Erro ao carregar funcionários:', error);
-        alert('Erro ao carregar a lista de funcionários. Por favor, tente novamente.');
+        const errorMessage = error.message || 'Erro ao carregar a lista de funcionários. Por favor, tente novamente.';
+        showError(document.querySelector('.employee-list'), errorMessage);
+    } finally {
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+        if (tableBody) tableBody.style.opacity = '1';
     }
 }
 
@@ -423,6 +437,77 @@ function searchEmployees(event) {
         const text = row.textContent.toLowerCase();
         row.style.display = text.includes(searchTerm) ? '' : 'none';
     });
+}
+
+// Função para mostrar popup de edição
+function showEditPopup(employee) {
+    const popup = document.createElement('div');
+    popup.className = 'edit-popup';
+    popup.innerHTML = `
+        <div class="popup-content">
+            <h2>Editar Funcionário</h2>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" value="${employee.nome}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="${employee.email}" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" name="telefone" value="${employee.telefone}" required>
+                </div>
+                <div class="form-group">
+                    <label for="especialidade">Especialidade:</label>
+                    <input type="text" id="especialidade" name="especialidade" value="${employee.especialidade}" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="button" class="btn-secondary" onclick="closePopup()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    const form = popup.querySelector('#editForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`http://localhost:3001/funcionarios/${employee._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nome: form.nome.value,
+                    email: form.email.value,
+                    telefone: form.telefone.value,
+                    especialidade: form.especialidade.value
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar funcionário');
+            }
+
+            loadEmployees(); // Recarrega a lista
+            closePopup();
+        } catch (error) {
+            alert('Erro ao atualizar funcionário: ' + error.message);
+        }
+    });
+}
+
+// Função para fechar o popup
+function closePopup() {
+    const popup = document.querySelector('.edit-popup');
+    if (popup) {
+        popup.remove();
+    }
 }
 
 // Inicialização quando o DOM estiver carregado
