@@ -2,12 +2,13 @@
 <html lang="pt-BR">
 <head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendamento - Caroline Gimenes Beauty</title>
-    <link rel="stylesheet" href="css/reset.css">
+    <title>Agendamento - Caroline Gimenes Beauty</title>    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/pages/schedule.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/components/schedule.css">    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/services/agendamento.js" defer></script>
+    <script src="js/services/client.js" defer></script>
 </head>
 <body>
     <header class="header">
@@ -30,23 +31,51 @@
                         <h3>Tratamentos</h3>
                         <div class="service-option">
                             <div class="service-option-info">
-                                <div class="service-name">Hidratação</div>
-                                <div class="service-duration">45 min</div>
-                                <div class="service-price">R$ 80,00</div>
+                                <div class="service-name">Alisamento</div>
+                                <div class="service-duration">120 min</div>
+                                <div class="service-price">R$ 150,00</div>
                             </div>
                         </div>
                         <div class="service-option">
                             <div class="service-option-info">
                                 <div class="service-name">Penteado</div>
                                 <div class="service-duration">60 min</div>
-                                <div class="service-price">R$ 250,00</div>
+                                <div class="service-price">R$ 80,00</div>
                             </div>
                         </div>
                         <div class="service-option">
                             <div class="service-option-info">
                                 <div class="service-name">Maquiagem</div>
                                 <div class="service-duration">90 min</div>
-                                <div class="service-price">R$ 350,00</div>
+                                <div class="service-price">R$ 120,00</div>
+                            </div>
+                        </div>
+                        <div class="service-option">
+                            <div class="service-option-info">
+                                <div class="service-name">Manicure</div>
+                                <div class="service-duration">60 min</div>
+                                <div class="service-price">R$ 50,00</div>
+                            </div>
+                        </div>
+                        <div class="service-option">
+                            <div class="service-option-info">
+                                <div class="service-name">Massagem</div>
+                                <div class="service-duration">120 min</div>
+                                <div class="service-price">R$ 200,00</div>
+                            </div>
+                        </div>
+                        <div class="service-option">
+                            <div class="service-option-info">
+                                <div class="service-name">Depilação</div>
+                                <div class="service-duration">40 min</div>
+                                <div class="service-price">R$ 70,00</div>
+                            </div>
+                        </div>
+                        <div class="service-option">
+                            <div class="service-option-info">
+                                <div class="service-name">Tratamento Capilar</div>
+                                <div class="service-duration">45 min</div>
+                                <div class="service-price">R$ 90,00</div>
                             </div>
                         </div>
                     </div>
@@ -106,21 +135,26 @@
                 </div>
 
                 <div class="professional-selector">
-                    <h2>Escolha o Profissional</h2>
-                    <div class="professional-cards">                        <div class="professional-card">
-                            <img src="assets/images/team-1.jpg" alt="Caroline Gimenes" class="professional-avatar">
+                    <h2>Escolha o Profissional</h2>                    <div class="professional-cards">
+                        <div class="professional-card" data-id="6827728154b079a8de56f5b8">
+                            <img src="assets/team-1.png" alt="Caroline Gimenes" class="professional-avatar">
                             <div class="professional-name">Caroline Gimenes</div>
                             <div class="professional-role">Cabeleireira Master</div>
                         </div>
-                        <div class="professional-card">
-                            <img src="assets/images/team-3.jpg" alt="Naire" class="professional-avatar">
+                        <div class="professional-card" data-id="6827728154b079a8de56f5b9">
+                            <img src="assets/team-3.png" alt="Naire" class="professional-avatar">
                             <div class="professional-name">Naire</div>
                             <div class="professional-role">Maquiagem</div>
                         </div>
-                        <div class="professional-card">
-                            <img src="assets/images/team-4.jpg" alt="Amanda" class="professional-avatar">
+                        <div class="professional-card" data-id="6827728154b079a8de56f5ba">
+                            <img src="assets/team-4.png" alt="Amanda" class="professional-avatar">
                             <div class="professional-name">Amanda</div>
                             <div class="professional-role">Manicure</div>
+                        </div>
+                        <div class="professional-card" data-id="6827728154b079a8de56f5ba">
+                            <img src="assets/team-5.png" alt="Lenita" class="professional-avatar">
+                            <div class="professional-name">Lenita</div>
+                            <div class="professional-role">Esteticista</div>
                         </div>
                     </div>
                 </div>
@@ -154,89 +188,5 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        // Função para gerar o calendário
-        function generateCalendar() {
-            const calendar = document.querySelector('.calendar');
-            const today = new Date();
-            const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
-
-            // Adicionar dias vazios no início
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day';
-                calendar.appendChild(emptyDay);
-            }
-
-            // Adicionar dias do mês
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.textContent = day;
-                
-                if (day < today.getDate()) {
-                    dayElement.classList.add('disabled');
-                }
-                
-                calendar.appendChild(dayElement);
-            }
-        }
-
-        // Função para gerar horários disponíveis
-        function generateTimeSlots() {
-            const timeSlots = document.querySelector('.time-slots');
-            const startHour = 9; // 9:00
-            const endHour = 20; // 20:00
-            const interval = 30; // 30 minutos
-
-            for (let hour = startHour; hour < endHour; hour++) {
-                for (let minutes = 0; minutes < 60; minutes += interval) {
-                    const timeSlot = document.createElement('div');
-                    timeSlot.className = 'time-slot';
-                    timeSlot.textContent = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-                    timeSlots.appendChild(timeSlot);
-                }
-            }
-        }
-
-        // Inicializar a página
-        document.addEventListener('DOMContentLoaded', () => {
-            generateCalendar();
-            generateTimeSlots();
-
-            // Adicionar eventos de clique
-            document.querySelectorAll('.service-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                });
-            });
-
-            document.querySelectorAll('.calendar-day').forEach(day => {
-                day.addEventListener('click', () => {
-                    if (!day.classList.contains('disabled')) {
-                        document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
-                        day.classList.add('selected');
-                    }
-                });
-            });
-
-            document.querySelectorAll('.time-slot').forEach(slot => {
-                slot.addEventListener('click', () => {
-                    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
-                    slot.classList.add('selected');
-                });
-            });
-
-            document.querySelectorAll('.professional-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    document.querySelectorAll('.professional-card').forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                });
-            });
-        });
-    </script>
 </body>
 </html>

@@ -1,0 +1,196 @@
+/* Estilos compartilhados para tabelas */
+.table-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+    background-color: var(--surface);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+    table-layout: auto; /* Mudando para auto para ajustar ao conteúdo */
+    font-size: 0.875rem; /* Reduzindo o tamanho da fonte */
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    white-space: normal; /* Permite quebra de linha */
+    word-wrap: break-word; /* Quebra palavras longas */
+    min-width: 120px; /* Largura mínima para cada coluna */
+}
+
+.data-table th {
+    background-color: var(--surface-variant);
+    font-weight: 500;
+    color: var(--on-surface-variant);
+    position: sticky;
+    top: 0;
+    font-size: 0.9rem; /* Reduzindo o tamanho da fonte dos cabeçalhos */
+}
+
+.data-table td {
+    color: var(--on-surface);
+}
+
+/* Colunas proporcionais - Layout padrão */
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+    width: 30%; /* Nome - mais espaço */
+    min-width: 150px;
+}
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+    width: 25%; /* Email/Cargo */
+    min-width: 150px;
+}
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+    width: 20%; /* Telefone */
+    min-width: 130px;
+}
+
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+    width: 15%; /* Email/Ações */
+    min-width: 100px;
+}
+
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+    width: 10%; /* Ações (quando houver 5 colunas) */
+    min-width: 100px;
+    text-align: center;
+}
+
+/* Específico para tabelas com 4 colunas */
+.data-table tr:first-child:nth-last-child(4),
+.data-table tr:first-child:nth-last-child(4) ~ tr {
+    th:last-child,
+    td:last-child {
+        text-align: center;
+    }
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(139, 49, 255, 0.05);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    min-width: 90px;
+}
+
+.action-buttons button {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.action-buttons button:hover {
+    background-color: rgba(139, 49, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.action-buttons .material-icons {
+    font-size: 1.25rem;
+}
+
+.button-edit,
+.button-delete {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.button-edit {
+    color: var(--primary-color);
+}
+
+.button-delete {
+    color: var(--error);
+}
+
+.button-edit:hover {
+    background-color: rgba(139, 49, 255, 0.1);
+}
+
+.button-delete:hover {
+    background-color: rgba(255, 49, 49, 0.1);
+}
+
+.material-icons {
+    font-size: 1.125rem; /* Ícones um pouco menores */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .data-table {
+        table-layout: auto;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    /* Em telas pequenas, ajusta as larguras e visibilidade */
+    .data-table th:nth-child(1),
+    .data-table td:nth-child(1) {
+        width: 40%; /* Nome */
+    }
+    
+    .data-table th:nth-child(2),
+    .data-table td:nth-child(2) {
+        width: 30%; /* Cargo (mantém visível para funcionários) */
+    }
+    
+    .data-table th:nth-child(3),
+    .data-table td:nth-child(3) {
+        width: 30%; /* Telefone */
+    }
+    
+    /* Oculta email em telas pequenas */
+    .data-table th:nth-child(4):not(:last-child),
+    .data-table td:nth-child(4):not(:last-child) {
+        display: none;
+    }
+    
+    /* Mantém a coluna de ações visível e ajusta sua largura */
+    .data-table th:last-child,
+    .data-table td:last-child {
+        width: 20%;
+    }
+    
+    /* Ajusta o tamanho dos ícones em telas pequenas */
+    .action-buttons .material-icons {
+        font-size: 1.1rem;
+    }
+    
+    .action-buttons button {
+        padding: 0.35rem;
+    }
+}
