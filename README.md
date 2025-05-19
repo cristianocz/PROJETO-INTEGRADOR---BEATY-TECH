@@ -34,8 +34,14 @@ node api/server.js
 
 ## 👥 Equipe
 
-- Claudia Renata Rodrigues Corazzim
-- 
+- Adaumir Abrão Dos Santos 
+- Aline Camila Falcão 
+- Claudia Renata Rodrigues Corazzim 
+- Cristiano Cabrero Cezar 
+- Fatima Aparecida Tagliaferro Spitti 
+- Gabriel Marcilio Serpa 
+- Josuelen Araujo Dos Santos 
+- Juan Carlos Teixeira Jimenez
 
 ## 📝 Licença
 
