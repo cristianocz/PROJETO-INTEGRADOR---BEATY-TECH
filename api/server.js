@@ -341,9 +341,8 @@ app.post('/agendamentos', async (req, res, next) => {
       return res.status(404).json({ 
         message: !cliente ? 'Cliente não encontrado' : 'Funcionário não encontrado' 
       });
-    }    // Normalizar a data para início do dia
-    const dataAgendamento = new Date(data);
-    dataAgendamento.setHours(0, 0, 0, 0);
+    }    // Tratar a data recebida como UTC para evitar problemas de fuso horário
+    const dataAgendamento = new Date(data + 'T00:00:00.000Z');
 
     const agendamento = new Agendamento({
       cliente: clienteId,

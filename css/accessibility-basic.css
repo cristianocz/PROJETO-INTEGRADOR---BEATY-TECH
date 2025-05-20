@@ -1,0 +1,49 @@
+/* Estilos básicos de acessibilidade */
+
+/* Oculta elementos visualmente mas mantém para leitores de tela */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Melhora o foco dos elementos interativos */
+:focus {
+    outline: 2px solid #6200ee;
+    outline-offset: 2px;
+}
+
+/* Aumenta contraste dos textos */
+body {
+    line-height: 1.5;
+}
+
+/* Aumenta área de clique em links e botões no mobile */
+@media (max-width: 768px) {
+    .button,
+    .nav-link {
+        padding: 12px 16px;
+    }
+}
+
+/* Suporte a dark mode do sistema */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+}
+
+/* Reduz animações se usuário preferir */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

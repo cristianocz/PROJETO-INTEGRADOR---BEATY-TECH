@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>    <meta charset="UTF-8">
+<head>    
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Beauty Tech - Salão de beleza com serviços profissionais">
     <title>Caroline Gimenes Beauty</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/pages/home.css">
+    <link rel="stylesheet" href="css/accessibility-basic.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
-<body>    <header class="header">
+<body>    
+    <header class="header">
         <div class="container">
             <nav class="nav-menu">
-                <a href="index.html" class="nav-link">Início</a>
+                <a href="index.html" class="nav-link" aria-current="page">Início</a>
                 <a href="about.html" class="nav-link">Sobre Nós</a>
                 <a href="services.html" class="nav-link">Serviços</a>
                 <a href="schedule.html" class="nav-link">Agendar</a>
@@ -21,30 +25,38 @@
             </nav>
         </div>
     </header>
-    
-    <main class="container">
-        <section class="hero-section">
-            <h1>Transforme seu Visual no Nosso Salão de Beleza</h1>
-            <p>Descubra uma experiência única de beleza e bem-estar com nossos serviços profissionais.</p>
-            <a href="schedule.html" class="button button-primary">Agende Agora</a>
-        </section>
+      <main>
+        <div class="container">
+            <section class="hero-section">
+                <h1>Transforme seu Visual no Nosso Salão de Beleza</h1>
+                <p>Descubra uma experiência única de beleza e bem-estar com nossos serviços profissionais.</p>
+                <a href="schedule.html" class="button button-primary" role="button">Agende Agora</a>
+            </section>
+        </div>
 
-        <section class="services-preview">            <div class="service-card">
-                <h3>Cabelo</h3>
+        <section class="services-preview">
+            <div class="service-card">
+                <h2>Cabelo</h2>
                 <p>Cortes femininos, coloração, mechas e tratamentos capilares exclusivos.</p>
-                <a href="services.html#cabelo" class="button button-secondary">Saiba Mais</a>
+                <a href="services.html#cabelo" class="button button-secondary">
+                    Saiba Mais<span class="sr-only"> sobre serviços de cabelo</span>
+                </a>
             </div>
 
             <div class="service-card">
-                <h3>Unhas</h3>
+                <h2>Unhas</h2>
                 <p>Manicure, pedicure e designs exclusivos para suas unhas.</p>
-                <a href="services.html#unhas" class="button button-secondary">Saiba Mais</a>
+                <a href="services.html#unhas" class="button button-secondary">
+                    Saiba Mais<span class="sr-only"> sobre serviços de unhas</span>
+                </a>
             </div>
 
             <div class="service-card">
-                <h3>Estética</h3>
+                <h2>Estética</h2>
                 <p>Tratamentos faciais, massagens e procedimentos estéticos avançados.</p>
-                <a href="services.html#estetica" class="button button-secondary">Saiba Mais</a>
+                <a href="services.html#estetica" class="button button-secondary">
+                    Saiba Mais<span class="sr-only"> sobre serviços de estética</span>
+                </a>
             </div>
         </section>
 
@@ -55,41 +67,54 @@
                 <div class="service-card">
                     <h3>Pacote Noiva</h3>
                     <p>Preparação completa para o seu grande dia.</p>
-                    <p class="price">R$ 350,00</p>
-                    <a href="schedule.html" class="button button-primary">Reservar</a>
+                    <p class="price" aria-label="Preço: 350 reais">R$ 350,00</p>
+                    <a href="schedule.html" class="button button-primary">
+                        Reservar<span class="sr-only"> pacote noiva</span>
+                    </a>
                 </div>
-                
+
                 <div class="service-card">
                     <h3>Combo Relaxante</h3>
                     <p>Massagem + Hidratação + Spa dos Pés</p>
-                    <p class="price">R$ 200,00</p>
-                    <a href="schedule.html" class="button button-primary">Reservar</a>
+                    <p class="price" aria-label="Preço: 200 reais">R$ 200,00</p>
+                    <a href="schedule.html" class="button button-primary">
+                        Reservar<span class="sr-only"> combo relaxante</span>
+                    </a>
                 </div>
             </div>
         </section>
     </main>   
-     <footer class="footer">
+
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">               
-                 <div class="footer-section">                    
+                <div class="footer-section">                    
                     <h4>Contato</h4>
-                    <p>📞 (15) 99741-1907</p>
-                    <p>✉️ carolinemunhoz1601@gmail.com</p>
-                    <p>📍 Rua Carmelina Ferreira, 50</p>
-                    <p>Pq Jataí - Votorantim/SP</p>
-                    <p>CEP: 18117-270</p>
+                    <address>
+                        <p><a href="tel:+5515997411907">(15) 99741-1907</a></p>
+                        <p><a href="mailto:carolinemunhoz1601@gmail.com">carolinemunhoz1601@gmail.com</a></p>
+                        <p>Rua Carmelina Ferreira, 50</p>
+                        <p>Pq Jataí - Votorantim/SP</p>
+                        <p>CEP: 18117-270</p>
+                    </address>
                 </div>
                 <div class="footer-section">
                     <h4>Horário de Funcionamento</h4>
                     <p>Segunda a Sábado: 8h às 20h</p>
                     <p>Domingo: Fechado</p>
                 </div>                
-                    <div class="footer-section">
+                <div class="footer-section">
                     <h4>Redes Sociais</h4>                    
                     <div class="social-links">
-                        <a href="https://www.instagram.com/_caagimenes" class="social-link" target="_blank">Instagram</a>
-                        <a href="https://www.facebook.com/carol.kesley.2025" class="social-link" target="_blank">Facebook</a>
-                        <a href="https://wa.me/5515997411907" class="social-link" target="_blank">WhatsApp</a>
+                        <a href="https://www.instagram.com/_caagimenes" class="social-link" target="_blank" rel="noopener">
+                            Instagram<span class="sr-only"> (abre em nova janela)</span>
+                        </a>
+                        <a href="https://www.facebook.com/carol.kesley.2025" class="social-link" target="_blank" rel="noopener">
+                            Facebook<span class="sr-only"> (abre em nova janela)</span>
+                        </a>
+                        <a href="https://wa.me/5515997411907" class="social-link" target="_blank" rel="noopener">
+                            WhatsApp<span class="sr-only"> (abre em nova janela)</span>
+                        </a>
                     </div>                
                 </div>
             </div>            

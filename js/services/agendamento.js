@@ -22,22 +22,19 @@ class AgendamentoService {    constructor(baseUrl = 'http://localhost:3001') {
             // Validar formato da data e hora antes de enviar
             if (!(dados.data && dados.horario)) {
                 throw new Error('Data e horário são obrigatórios');
-            }
-
-            // Garantir que a data está no formato correto (YYYY-MM-DD)
-            const data = new Date(dados.data);
-            if (isNaN(data.getTime())) {
-                throw new Error('Data inválida');
-            }
-            
-            // Validar formato do horário (HH:mm)
+            }            // Validar formato do horário (HH:mm)
             if (!/^\d{2}:\d{2}$/.test(dados.horario)) {
                 throw new Error('Horário deve estar no formato HH:mm');
             }
 
+            // A data já deve estar no formato YYYY-MM-DD
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(dados.data)) {
+                throw new Error('Data deve estar no formato YYYY-MM-DD');
+            }
+
             const dadosValidados = {
                 ...dados,
-                data: data.toISOString().split('T')[0],  // Formato YYYY-MM-DD
+                data: dados.data,  // Manter a data exatamente como está
                 duracao: parseInt(dados.duracao)          // Garantir que duração é número
             };
 
@@ -146,8 +143,10 @@ class AgendamentoState {
         if (summaryClient) summaryClient.textContent = this.selectedClient ? this.selectedClient.nome : '-';
         if (summaryService) summaryService.textContent = this.selectedService ? this.selectedService.name : '-';
         if (summaryProfessional) summaryProfessional.textContent = this.selectedProfessional ? this.selectedProfessional.name : '-';        if (summaryDate && this.selectedDate) {
-            const date = new Date(this.selectedDate + 'T12:00:00');
-            summaryDate.textContent = date.toLocaleDateString();
+            const dateParts = this.selectedDate.split('-').map(Number);
+            // Criar a data no dia correto sem ajuste de timezone
+            const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            summaryDate.textContent = localDate.toLocaleDateString('pt-BR');
         } else if (summaryDate) {
             summaryDate.textContent = '-';
         }
@@ -338,10 +337,10 @@ function setupDateListeners() {
             'Setembro': 8, 'Outubro': 9, 'Novembro': 10, 'Dezembro': 11
         };
 
-        // Criar a data mantendo o dia correto no fuso horário local
-        const date = new Date(parseInt(year), months[month], day, 12, 0, 0, 0);
-        const localFormattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-        state.selectedDate = localFormattedDate;
+        // Criar a data mantendo o dia correto no fuso horário local        // Criar a data usando UTC para evitar problemas de fuso horário
+        const date = new Date(Date.UTC(parseInt(year), months[month], day));
+        const formattedDate = date.toISOString().split('T')[0];
+        state.selectedDate = formattedDate;
         state.selectedTime = null;
         state.updateUI();
 
@@ -486,14 +485,20 @@ function setupBookingButton() {
             return;
         }
 
-        try {
-            const endTime = minutesToTime(timeToMinutes(state.selectedTime) + state.selectedService.duration);            const confirmacao = await showConfirmDialog(
+        try {            const endTime = minutesToTime(timeToMinutes(state.selectedTime) + state.selectedService.duration);
+            
+            // Criar a data no dia correto sem ajuste de timezone
+            const dateParts = state.selectedDate.split('-').map(Number);
+            const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            const formattedDate = localDate.toLocaleDateString('pt-BR');
+
+            const confirmacao = await showConfirmDialog(
                 'Confirmar Agendamento',
                 `Cliente: ${state.selectedClient.nome}\n` +
                 `Telefone: ${state.selectedClient.telefone}\n` +
                 `Serviço: ${state.selectedService.name}\n` +
                 `Profissional: ${state.selectedProfessional.name}\n` +
-                `Data: ${new Date(state.selectedDate).toLocaleDateString()}\n` +
+                `Data: ${formattedDate}\n` +
                 `Horário: ${state.selectedTime} - ${endTime}\n` +
                 `Valor: R$ ${state.selectedService.preco.toFixed(2)}`
             );
