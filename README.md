@@ -33,8 +33,10 @@ node api/server.js
 
 - Frontend: HTML e CSS com Javascript
 - Backend: Node.js
-- Database: MongoDB
+- Database: MongoDB (Cloud)
 - CI/CD: GitHub Actions
+- Deploy: Vercel
+- Acessibilidade: WCAG 2.1 AA
 
 ## ⚙️ Integração Contínua
 
@@ -58,6 +60,35 @@ npm run lint
 # Executar todas as verificações do CI
 npm run ci
 ```
+
+## 🌐 Deploy
+
+O projeto está disponível em produção através da Vercel:
+- Frontend: https://beauty-tech.vercel.app
+- API: https://beauty-tech.vercel.app/api
+
+### Deploy Manual
+```bash
+# Instalar Vercel CLI
+npm install -g vercel
+
+# Login na Vercel
+vercel login
+
+# Deploy
+vercel
+```
+
+## ♿ Acessibilidade
+
+O projeto segue as diretrizes WCAG 2.1 nível AA, incluindo:
+- Alto contraste
+- Suporte a navegação por teclado
+- Textos alternativos em imagens
+- Labels em formulários
+- Landmarks ARIA
+- Skip links
+- Redução de movimento
 
 ## 👥 Equipe
 
