@@ -34,6 +34,30 @@ node api/server.js
 - Frontend: HTML e CSS com Javascript
 - Backend: Node.js
 - Database: MongoDB
+- CI/CD: GitHub Actions
+
+## ⚙️ Integração Contínua
+
+O projeto utiliza GitHub Actions para:
+- Execução automática de testes
+- Verificação de qualidade do código (ESLint)
+- Build e deploy automático
+- Validação em múltiplas versões do Node.js (16.x e 18.x)
+
+### Executar verificações localmente
+```bash
+# Instalar dependências de desenvolvimento
+npm install
+
+# Executar testes
+npm test
+
+# Verificar qualidade do código
+npm run lint
+
+# Executar todas as verificações do CI
+npm run ci
+```
 
 ## 👥 Equipe
 

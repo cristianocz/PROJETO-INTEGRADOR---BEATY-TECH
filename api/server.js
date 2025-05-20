@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 // Conecte ao MongoDB Atlas com tratamento de erros
-mongoose.connect('mongodb+srv://crrcorazzim:82jVSD5rbULgZebW@cluster0.ofzj9xy.mongodb.net/beatytech', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://crrcorazzim:82jVSD5rbULgZebW@cluster0.ofzj9xy.mongodb.net/beatytech', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   retryWrites: true,

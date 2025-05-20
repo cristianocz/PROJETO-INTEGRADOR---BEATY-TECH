@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Conectar ao MongoDB Atlas com opções de conexão otimizadas
-mongoose.connect('mongodb+srv://crrcorazzim:82jVSD5rbULgZebW@cluster0.ofzj9xy.mongodb.net/beatytech', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://crrcorazzim:82jVSD5rbULgZebW@cluster0.ofzj9xy.mongodb.net/beatytech', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   retryWrites: true,
