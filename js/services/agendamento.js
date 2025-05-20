@@ -283,15 +283,24 @@ async function setupProfessionalCards() {
             const card = document.createElement('div');
             card.className = 'professional-card';
             card.dataset.id = funcionario._id;
-            
-            // Determina a imagem baseado na especialidade
-            let imagemSrc = 'assets/team-1.png'; // imagem padrão
-            if (funcionario.especialidade.toLowerCase().includes('maquiagem')) {
+              // Determina a imagem baseada na especialidade do funcionário
+            let imagemSrc;
+            const especialidade = funcionario.especialidade.toLowerCase();
+              if (especialidade.includes('cab')) {
+                // Caroline - Cabeleireira Master
+                imagemSrc = 'assets/team-1.png';
+            } else if (especialidade.includes('maq')) {
+                // Naire - Maquiadora
                 imagemSrc = 'assets/team-3.png';
-            } else if (funcionario.especialidade.toLowerCase().includes('manicure')) {
+            } else if (especialidade.includes('mani') || especialidade.includes('pedi')) {
+                // Amanda - Manicure
                 imagemSrc = 'assets/team-4.png';
-            } else if (funcionario.especialidade.toLowerCase().includes('estetic')) {
+            } else if (especialidade.includes('estet')) {
+                // Lenita - Esteticista
                 imagemSrc = 'assets/team-5.png';
+            } else {
+                // Imagem padrão para outras especialidades
+                imagemSrc = 'assets/team-1.png';
             }
 
             card.innerHTML = `
