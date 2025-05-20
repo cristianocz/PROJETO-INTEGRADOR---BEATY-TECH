@@ -37,12 +37,18 @@ const funcionarios = [
     telefone: '(15) 99999-9999',
     especialidade: 'Maquiagem',
     disponivel: true
-  },
-  {
+  },  {
     nome: 'Amanda',
     email: 'amanda@beautytech.com',
     telefone: '(15) 98888-8888',
     especialidade: 'Manicure',
+    disponivel: true
+  },
+  {
+    nome: 'Lenita',
+    email: 'lenita@beautytech.com',
+    telefone: '(15) 97777-7777',
+    especialidade: 'Esteticista',
     disponivel: true
   }
 ];

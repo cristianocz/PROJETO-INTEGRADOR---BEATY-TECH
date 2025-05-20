@@ -16,8 +16,11 @@ Beauty Tech é uma plataforma desenvolvida para o setor de beleza, visando facil
 
 ### Frontend
 ```bash
-# Instalar dependências e iniciar
+# Instalar dependências
+npm install
 
+# Iniciar o servidor frontend (abrirá automaticamente no navegador)
+npm start
 ```
 
 ### Backend
