@@ -16,20 +16,16 @@ Beauty Tech é uma plataforma desenvolvida para o setor de beleza, visando facil
 
 ### Frontend
 ```bash
-# Instalar dependências
-npm install
+#  Instalar dependências e iniciar
+npm install && npm start
 
-# Iniciar o servidor frontend (abrirá automaticamente no navegador)
-npm start
+#Comando para rodar o backend
+node api/server.js
 ```
 
 ### Backend
 ```bash
 # Iniciar o servidor
-
-# Instalar dependências
-cd api; npm install; cd ..
-
 node api/server.js
 ```
 
@@ -107,4 +103,16 @@ O projeto segue as diretrizes WCAG 2.1 nível AA, incluindo:
 
 ## 📝 Licença
 
-Este projeto está sob a licença [sua licença aqui].
+Este projeto está sob a licença MIT - veja o arquivo [LICENSE.md](LICENSE.md) para detalhes.
+
+Copyright (c) 2024 Beauty Tech
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
