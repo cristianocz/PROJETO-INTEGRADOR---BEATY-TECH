@@ -183,9 +183,27 @@ app.put('/clientes/:id', async (req, res, next) => {
       return res.status(400).json({ message: 'Email inválido' });
     }
 
+    if (!validatePhone(telefone)) {
+      return res.status(400).json({ message: 'Telefone inválido. Use o formato: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX' });
+    }
+
+    const updateData = {
+      nome,
+      email,
+      telefone
+    };
+
+    if (dataNascimento) {
+      const data = new Date(dataNascimento);
+      if (isNaN(data.getTime())) {
+        return res.status(400).json({ message: 'Data de nascimento inválida' });
+      }
+      updateData.dataNascimento = data;
+    }
+
     const cliente = await Cliente.findByIdAndUpdate(
       req.params.id,
-      { nome, email, telefone, dataNascimento },
+      updateData,
       { new: true, runValidators: true }
     );
 

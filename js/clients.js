@@ -201,14 +201,17 @@ async function handleClientSubmit(event) {
     clearError(document.getElementById('client-name'));
     clearError(document.getElementById('client-email'));
     clearError(document.getElementById('client-phone'));
-    
-    const form = event.target;
+      const form = event.target;
     const formData = {
         nome: document.getElementById('client-name').value.trim(),
         email: document.getElementById('client-email').value.trim(),
-        telefone: document.getElementById('client-phone').value.trim(),
-        dataNascimento: document.getElementById('client-birth').value
+        telefone: document.getElementById('client-phone').value.trim()
     };
+    
+    const dataNascimento = document.getElementById('client-birth').value;
+    if (dataNascimento) {
+        formData.dataNascimento = new Date(dataNascimento + 'T00:00:00Z').toISOString();
+    }
 
     // Valida o formulário
     const { isValid, errors } = validateForm(formData);
@@ -254,6 +257,69 @@ async function handleClientSubmit(event) {
     }
 }
 
+// Função para lidar com o envio do formulário de edição
+async function handleEditSubmit(event) {
+    event.preventDefault();
+    
+    // Limpa erros anteriores
+    clearError(document.getElementById('edit-name'));
+    clearError(document.getElementById('edit-email'));
+    clearError(document.getElementById('edit-phone'));
+
+    const form = event.target;
+    const clientId = form.dataset.editId;
+    
+    const formData = {
+        nome: document.getElementById('edit-name').value.trim(),
+        email: document.getElementById('edit-email').value.trim(),
+        telefone: document.getElementById('edit-phone').value.trim()
+    };
+    
+    const dataNascimento = document.getElementById('edit-birth').value;
+    if (dataNascimento) {
+        formData.dataNascimento = new Date(dataNascimento + 'T00:00:00Z').toISOString();
+    }
+
+    // Valida o formulário
+    const { isValid, errors } = validateForm(formData);
+    if (!isValid) {
+        if (errors.nome) {
+            showError(document.getElementById('edit-name'), errors.nome);
+            document.getElementById('edit-name').focus();
+        }
+        if (errors.email) {
+            showError(document.getElementById('edit-email'), errors.email);
+            if (!errors.nome) document.getElementById('edit-email').focus();
+        }
+        if (errors.telefone) {
+            showError(document.getElementById('edit-phone'), errors.telefone);
+            if (!errors.nome && !errors.email) document.getElementById('edit-phone').focus();
+        }
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/clientes/${clientId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao atualizar cliente');
+        }
+
+        alert('Cliente atualizado com sucesso!');
+        document.getElementById('edit-modal').style.display = 'none';
+        loadClients(); // Recarrega a lista de clientes
+    } catch (error) {
+        console.error('Erro ao atualizar cliente:', error);
+        alert('Erro ao atualizar cliente. Por favor, tente novamente.');
+    }
+}
+
 // Função para editar cliente
 async function editClient(clientId) {
     try {
@@ -261,16 +327,45 @@ async function editClient(clientId) {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const client = await response.json();
 
-        document.getElementById('client-name').value = client.nome || '';
-        document.getElementById('client-email').value = client.email || '';
-        document.getElementById('client-phone').value = client.telefone || '';
-        document.getElementById('client-birth').value = client.dataNascimento.split('T')[0] || '';
+        // Preenche os campos do formulário de edição
+        document.getElementById('edit-name').value = client.nome || '';
+        document.getElementById('edit-email').value = client.email || '';
+        document.getElementById('edit-phone').value = client.telefone || '';
 
-        const form = document.getElementById('client-form');
+        // Trata a data de nascimento de forma mais segura
+        if (client.dataNascimento) {
+            const data = new Date(client.dataNascimento);
+            if (!isNaN(data.getTime())) {
+                document.getElementById('edit-birth').value = data.toISOString().split('T')[0];
+            }
+        } else {
+            document.getElementById('edit-birth').value = '';
+        }
+
+        // Configura o formulário de edição
+        const form = document.getElementById('edit-client-form');
         form.dataset.editId = clientId;
-        form.querySelector('h2').textContent = 'Editar Cliente';
 
-        openModal();
+        // Configura o evento de submit do formulário
+        form.onsubmit = handleEditSubmit;
+
+        // Mostra o modal
+        const modal = document.getElementById('edit-modal');
+        modal.style.display = 'block';
+
+        // Configura o botão de fechar
+        const closeBtn = modal.querySelector('.close');
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+        };
+
+        // Fecha o modal quando clicar fora
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+
     } catch (error) {
         console.error('Erro ao editar cliente:', error);
         alert(`Erro ao editar cliente: ${error.message}`);
@@ -296,7 +391,20 @@ async function deleteClient(clientId) {
 }
 
 // Inicializa a lista de clientes ao carregar a página
-document.addEventListener('DOMContentLoaded', loadClients);
+document.addEventListener('DOMContentLoaded', () => {
+    loadClients();
+    
+    // Adiciona máscara aos campos de telefone
+    const phoneInputs = ['client-phone', 'edit-phone'];
+    phoneInputs.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', function() {
+                formatPhone(this);
+            });
+        }
+    });
+});
 
 // Máscara para o campo de telefone
 const phoneInput = document.getElementById('client-phone');
@@ -337,18 +445,16 @@ function openModal() {
 
 // Função para fechar o modal
 function closeModal() {
-    const modal = document.getElementById('client-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        modal.setAttribute('aria-hidden', 'true');
-        modal.removeAttribute('aria-modal');
-
-        // Limpa o formulário e o ID de edição
-        const form = document.getElementById('client-form');
-        if (form) {
-            form.reset();
-            delete form.dataset.editId;
-            form.querySelector('h2').textContent = 'Adicionar Cliente';
+    const form = document.getElementById('client-form');
+    if (form) {
+        form.reset();
+        delete form.dataset.editId;
+        document.getElementById('form-title').textContent = 'Novo Cliente';
+        
+        // Esconde o botão cancelar
+        const cancelButton = document.getElementById('cancel-edit');
+        if (cancelButton) {
+            cancelButton.style.display = 'none';
         }
     }
 }
