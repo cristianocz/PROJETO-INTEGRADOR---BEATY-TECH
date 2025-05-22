@@ -26,6 +26,10 @@ npm start
 ### Backend
 ```bash
 # Iniciar o servidor
+
+# Instalar dependências
+cd api; npm install; cd ..
+
 node api/server.js
 ```
 
