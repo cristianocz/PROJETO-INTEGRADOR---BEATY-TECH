@@ -1,9 +1,9 @@
 /* Material Design Color Variables */
 :root {  /* Cores principais */
-  --primary-color: #ff31f1;          /* Rosa vibrante */
-  --primary-variant: #cc27c1;        /* Rosa escuro */
-  --secondary-color: #ff9af9;        /* Rosa suave */
-  --secondary-variant: #ff6bf7;      /* Rosa médio */
+  --primary-color: #8B31FF;          /* Roxo vibrante */
+  --primary-variant: #6B27CC;        /* Roxo escuro */
+  --secondary-color: #B79AFF;        /* Roxo suave */
+  --secondary-variant: #9B6BFF;      /* Roxo médio */
   
   /* Cores de fundo e superfície */
   --background: #F8F5FF;             /* Fundo lilás bem claro */
@@ -28,9 +28,8 @@
   --on-success: #FFFFFF;            /* Texto sobre sucesso */
   --on-warning: #000000;            /* Texto sobre avisos */
   --on-info: #000000;               /* Texto sobre informações */
-    /* Gradientes */
-  --gradient-primary: linear-gradient(135deg, #ff31f1, #cc27c1);
-  --gradient-secondary: linear-gradient(135deg, #ff9af9, #ff6bf7);
+    /* Gradientes */  --gradient-primary: linear-gradient(135deg, #8B31FF, #6B27CC);
+  --gradient-secondary: linear-gradient(135deg, #B79AFF, #9B6BFF);
 }
 
 /* Common styles shared across all pages */

@@ -22,9 +22,10 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://crrcorazzim:82jVSD5rb
 
 // Modelos
 const Cliente = mongoose.model('Cliente', {
-  nome: String,
-  email: String,
-  telefone: String,
+  nome: { type: String, required: true },
+  email: { type: String, required: true },
+  telefone: { type: String, required: true },
+  dataNascimento: { type: Date },
   dataCadastro: { type: Date, default: Date.now }
 });
 
@@ -107,19 +108,29 @@ app.get('/clientes', async (req, res, next) => {
 
 app.post('/clientes', async (req, res, next) => {
   try {
-    const { nome, email, telefone } = req.body;
+    const { nome, email, telefone, dataNascimento } = req.body;
     
     if (!nome || !email || !telefone) {
-      return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+      return res.status(400).json({ message: 'Nome, email e telefone são obrigatórios' });
     }
     
     if (!validateEmail(email)) {
       return res.status(400).json({ message: 'Email inválido' });
     }
 
-    const cliente = new Cliente({ nome, email, telefone });
-    await cliente.save();
-    res.status(201).json(cliente);
+    if (!validatePhone(telefone)) {
+      return res.status(400).json({ message: 'Telefone inválido. Use o formato: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX' });
+    }
+
+    const novoCliente = new Cliente({ 
+      nome, 
+      email, 
+      telefone,
+      dataNascimento: dataNascimento ? new Date(dataNascimento) : undefined
+    });
+
+    await novoCliente.save();
+    res.status(201).json(novoCliente);
   } catch (err) {
     next(err);
   }
@@ -162,7 +173,7 @@ app.get('/clientes/:id', async (req, res, next) => {
 // Rota para atualizar um cliente
 app.put('/clientes/:id', async (req, res, next) => {
   try {
-    const { nome, email, telefone } = req.body;
+    const { nome, email, telefone, dataNascimento } = req.body;
     
     if (!nome || !email || !telefone) {
       return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
@@ -174,7 +185,7 @@ app.put('/clientes/:id', async (req, res, next) => {
 
     const cliente = await Cliente.findByIdAndUpdate(
       req.params.id,
-      { nome, email, telefone },
+      { nome, email, telefone, dataNascimento },
       { new: true, runValidators: true }
     );
 

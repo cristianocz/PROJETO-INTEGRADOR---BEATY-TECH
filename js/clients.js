@@ -114,13 +114,30 @@ function displayClients(clients) {
     if (!tableBody) return;
 
     tableBody.innerHTML = '';
-    
     clients.forEach(client => {
         const row = document.createElement('tr');
+        let dataNascimento = '';
+        
+        if (client.dataNascimento) {
+            try {
+                const data = new Date(client.dataNascimento);
+                if (!isNaN(data.getTime())) {
+                    const dia = String(data.getUTCDate()).padStart(2, '0');
+                    const mes = String(data.getUTCMonth() + 1).padStart(2, '0');
+                    const ano = data.getUTCFullYear();
+                    dataNascimento = `${dia}/${mes}/${ano}`;
+                }
+            } catch (err) {
+                console.error('Erro ao formatar data:', err);
+                dataNascimento = '';
+            }
+        }
+
         row.innerHTML = `
             <td>${client.nome || ''}</td>
             <td>${client.email || ''}</td>
             <td>${client.telefone || ''}</td>
+            <td>${dataNascimento}</td>
             <td>
                 <div class="action-buttons">
                     <button onclick="editClient('${client._id}')" class="button-edit" title="Editar">
@@ -229,302 +246,116 @@ async function handleClientSubmit(event) {
 
         const action = editId ? 'atualizado' : 'cadastrado';
         alert(`Cliente ${action} com sucesso!`);
-        
-        resetForm();
-        await loadClients();
+        loadClients();
+        closeModal();
     } catch (error) {
         console.error('Erro ao salvar cliente:', error);
-        alert('Erro ao salvar cliente: ' + error.message);
+        alert(`Erro ao salvar cliente: ${error.message}`);
     }
 }
 
-// Função para criar modal de edição
-function createEditModal() {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Editar Cliente</h2>
-            <form id="edit-client-form">
-                <div class="form-group">
-                    <label for="edit-client-name" class="form-label">Nome Completo</label>
-                    <input type="text" id="edit-client-name" name="edit-client-name" class="form-input" required>
-                    <div class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="edit-client-email" class="form-label">Email</label>
-                    <input type="email" id="edit-client-email" name="edit-client-email" class="form-input" required>
-                    <div class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="edit-client-phone" class="form-label">Telefone</label>
-                    <input type="tel" id="edit-client-phone" name="edit-client-phone" class="form-input" required maxlength="15" placeholder="(XX) XXXXX-XXXX">
-                    <div class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="edit-client-birth" class="form-label">Data de Nascimento</label>
-                    <input type="date" id="edit-client-birth" name="edit-client-birth" class="form-input">
-                    <div class="error-message"></div>
-                </div>
-                <button type="submit" class="button button-primary">Salvar Alterações</button>
-            </form>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    return modal;
-}
-
 // Função para editar cliente
-async function editClient(id) {
+async function editClient(clientId) {
     try {
-        let modal = document.querySelector('.modal');
-        if (!modal) {
-            modal = createEditModal();
-        }
-
-        const response = await fetch(`${API_URL}/clientes/${id}`);
-        if (!response.ok) {
-            throw new Error(`Erro ao carregar cliente: ${response.status}`);
-        }
-        
+        const response = await fetch(`${API_URL}/clientes/${clientId}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const client = await response.json();
-        
-        // Remove event listeners antigos do input de telefone
-        const oldPhoneInput = document.getElementById('edit-client-phone');
-        if (oldPhoneInput) {
-            const oldListeners = oldPhoneInput.cloneNode(true);
-            oldPhoneInput.parentNode.replaceChild(oldListeners, oldPhoneInput);
-        }
 
-        // Preenche o formulário com os dados do cliente
-        document.getElementById('edit-client-name').value = client.nome || '';
-        document.getElementById('edit-client-email').value = client.email || '';
-        document.getElementById('edit-client-phone').value = client.telefone || '';
-        document.getElementById('edit-client-birth').value = client.dataNascimento ? client.dataNascimento.split('T')[0] : '';
-        
-        // Adiciona formatação de telefone ao campo
-        const phoneInput = document.getElementById('edit-client-phone');
-        phoneInput.addEventListener('input', () => formatPhone(phoneInput));
+        document.getElementById('client-name').value = client.nome || '';
+        document.getElementById('client-email').value = client.email || '';
+        document.getElementById('client-phone').value = client.telefone || '';
+        document.getElementById('client-birth').value = client.dataNascimento.split('T')[0] || '';
 
-        // Mostra o modal
-        modal.style.display = 'block';
+        const form = document.getElementById('client-form');
+        form.dataset.editId = clientId;
+        form.querySelector('h2').textContent = 'Editar Cliente';
 
-        function closeModal() {
-            modal.style.display = 'none';
-            // Limpa o formulário e os erros
-            document.getElementById('edit-client-form').reset();
-            clearError(document.getElementById('edit-client-name'));
-            clearError(document.getElementById('edit-client-email'));
-            clearError(document.getElementById('edit-client-phone'));
-            clearError(document.getElementById('edit-client-birth'));
-            // Remove os event listeners
-            closeBtn.removeEventListener('click', closeModal);
-            window.removeEventListener('click', closeOnOutsideClick);
-        }
-
-        function closeOnOutsideClick(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-
-        // Adiciona event listeners para fechar o modal
-        const closeBtn = modal.querySelector('.close');
-        closeBtn.addEventListener('click', closeModal);
-        window.addEventListener('click', closeOnOutsideClick);
-
-        // Manipula o envio do formulário
-        const form = document.getElementById('edit-client-form');
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-            
-            // Limpa erros anteriores
-            clearError(document.getElementById('edit-client-name'));
-            clearError(document.getElementById('edit-client-email'));
-            clearError(document.getElementById('edit-client-phone'));
-            
-            const formData = {
-                nome: document.getElementById('edit-client-name').value.trim(),
-                email: document.getElementById('edit-client-email').value.trim(),
-                telefone: document.getElementById('edit-client-phone').value.trim(),
-                dataNascimento: document.getElementById('edit-client-birth').value
-            };
-
-            // Valida o formulário
-            const { isValid, errors } = validateForm(formData);
-            
-            if (!isValid) {
-                if (errors.nome) {
-                    showError(document.getElementById('edit-client-name'), errors.nome);
-                    document.getElementById('edit-client-name').focus();
-                }
-                if (errors.email) {
-                    showError(document.getElementById('edit-client-email'), errors.email);
-                    if (!errors.nome) document.getElementById('edit-client-email').focus();
-                }
-                if (errors.telefone) {
-                    showError(document.getElementById('edit-client-phone'), errors.telefone);
-                    if (!errors.nome && !errors.email) document.getElementById('edit-client-phone').focus();
-                }
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_URL}/clientes/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Erro ao atualizar cliente');
-                }
-
-                alert('Cliente atualizado com sucesso!');
-                closeModal();
-                loadClients(); // Recarrega a lista
-            } catch (error) {
-                console.error('Erro ao atualizar cliente:', error);
-                alert('Erro ao atualizar cliente. Por favor, tente novamente.');
-            }
-        };
-
+        openModal();
     } catch (error) {
-        console.error('Erro ao carregar cliente:', error);
-        alert('Erro ao carregar dados do cliente. Por favor, tente novamente.');
+        console.error('Erro ao editar cliente:', error);
+        alert(`Erro ao editar cliente: ${error.message}`);
     }
 }
 
 // Função para excluir cliente
-async function deleteClient(id) {
+async function deleteClient(clientId) {
     if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
 
     try {
-        const response = await fetch(`${API_URL}/clientes/${id}`, {
+        const response = await fetch(`${API_URL}/clientes/${clientId}`, {
             method: 'DELETE'
         });
-
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         alert('Cliente excluído com sucesso!');
         loadClients();
     } catch (error) {
         console.error('Erro ao excluir cliente:', error);
-        alert('Erro ao excluir cliente. Por favor, tente novamente.');
+        alert(`Erro ao excluir cliente: ${error.message}`);
     }
 }
 
-// Função para resetar o formulário
-function resetForm() {
-    const form = document.getElementById('client-form');
-    form.reset();
-    delete form.dataset.editId;
-    
-    const submitButton = form.querySelector('button[type="submit"]');
-    submitButton.textContent = 'Cadastrar Cliente';
-    
-    // Limpa erros
-    clearError(document.getElementById('client-name'));
-    clearError(document.getElementById('client-email'));
-    clearError(document.getElementById('client-phone'));
-}
+// Inicializa a lista de clientes ao carregar a página
+document.addEventListener('DOMContentLoaded', loadClients);
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', () => {
-    loadClients();
-    
-    // Event listeners
-    const form = document.getElementById('client-form');
-    form.addEventListener('submit', handleClientSubmit);
-    
-    const searchInput = document.querySelector('.search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', debounce(searchClients, 300));
-    }
-    
-    const phoneInput = document.getElementById('client-phone');
-    if (phoneInput) {
-        phoneInput.addEventListener('input', () => formatPhone(phoneInput));
-    }
-});
-
-// Função utilitária debounce
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Função para mostrar popup de edição
-function showEditPopup(client) {
-    const popup = document.createElement('div');
-    popup.className = 'edit-popup';
-    popup.innerHTML = `
-        <div class="popup-content">
-            <h2>Editar Cliente</h2>
-            <form id="editForm">
-                <div class="form-group">
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" value="${client.nome}" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="${client.email}" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefone">Telefone:</label>
-                    <input type="tel" id="telefone" name="telefone" value="${client.telefone}" required>
-                </div>
-                <div class="button-group">
-                    <button type="submit" class="btn-primary">Salvar</button>
-                    <button type="button" class="btn-secondary" onclick="closePopup()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    `;
-
-    document.body.appendChild(popup);
-
-    const form = popup.querySelector('#editForm');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`http://localhost:3001/clientes/${client._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nome: form.nome.value,
-                    email: form.email.value,
-                    telefone: form.telefone.value
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Erro ao atualizar cliente');
-            }
-
-            loadClients(); // Recarrega a lista
-            closePopup();
-        } catch (error) {
-            alert('Erro ao atualizar cliente: ' + error.message);
-        }
+// Máscara para o campo de telefone
+const phoneInput = document.getElementById('client-phone');
+if (phoneInput) {
+    phoneInput.addEventListener('input', function() {
+        formatPhone(this);
     });
 }
 
-function closePopup() {
-    const popup = document.querySelector('.edit-popup');
-    if (popup) {
-        popup.remove();
+// Evento para o formulário de cliente
+const clientForm = document.getElementById('client-form');
+if (clientForm) {
+    clientForm.addEventListener('submit', handleClientSubmit);
+}
+
+// Evento para o campo de pesquisa
+const searchInput = document.getElementById('search-client');
+if (searchInput) {
+    searchInput.addEventListener('input', searchClients);
+}
+
+// Função para abrir o modal
+function openModal() {
+    const modal = document.getElementById('client-modal');
+    if (modal) {
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
+        modal.setAttribute('aria-modal', 'true');
+
+        // Adiciona evento para fechar o modal ao clicar fora do conteúdo
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
     }
 }
+
+// Função para fechar o modal
+function closeModal() {
+    const modal = document.getElementById('client-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        modal.removeAttribute('aria-modal');
+
+        // Limpa o formulário e o ID de edição
+        const form = document.getElementById('client-form');
+        if (form) {
+            form.reset();
+            delete form.dataset.editId;
+            form.querySelector('h2').textContent = 'Adicionar Cliente';
+        }
+    }
+}
+
+// Fecha o modal ao pressionar ESC
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
