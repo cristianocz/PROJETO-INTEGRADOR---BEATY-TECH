@@ -1,19 +1,17 @@
 /* Material Design Color Variables */
-:root {
-  /* Cores principais */
-  --primary-color: #8B31FF;          /* Roxo vibrante */
-  --primary-variant: #6B0FD2;        /* Roxo escuro */
-  --secondary-color: #E0B0FF;        /* Lilás suave */
-  --secondary-variant: #CE93D8;      /* Lilás médio */
+:root {  /* Cores principais */
+  --primary-color: #ff31f1;          /* Rosa vibrante */
+  --primary-variant: #cc27c1;        /* Rosa escuro */
+  --secondary-color: #ff9af9;        /* Rosa suave */
+  --secondary-variant: #ff6bf7;      /* Rosa médio */
   
   /* Cores de fundo e superfície */
   --background: #F8F5FF;             /* Fundo lilás bem claro */
   --surface: #FFFFFF;                /* Superfície branca */
   --surface-variant: #F3E5F5;        /* Superfície lilás suave */
-  
-  /* Elementos de destaque */
-  --accent-color: #B347FF;           /* Roxo médio para destaques */
-  --accent-variant: #9B24E3;         /* Roxo mais escuro para hover */
+    /* Elementos de destaque */
+  --accent-color: #ff47e1;           /* Rosa médio para destaques */
+  --accent-variant: #e324c3;         /* Rosa mais escuro para hover */
   
   /* Cores de erro e sucesso */
   --error: #CF6679;                  /* Vermelho suave */
@@ -30,10 +28,9 @@
   --on-success: #FFFFFF;            /* Texto sobre sucesso */
   --on-warning: #000000;            /* Texto sobre avisos */
   --on-info: #000000;               /* Texto sobre informações */
-  
-  /* Gradientes */
-  --gradient-primary: linear-gradient(135deg, #8B31FF, #6B0FD2);
-  --gradient-secondary: linear-gradient(135deg, #E0B0FF, #CE93D8);
+    /* Gradientes */
+  --gradient-primary: linear-gradient(135deg, #ff31f1, #cc27c1);
+  --gradient-secondary: linear-gradient(135deg, #ff9af9, #ff6bf7);
 }
 
 /* Common styles shared across all pages */
@@ -71,16 +68,14 @@ body {
 .button-primary {
   background: var(--gradient-primary);
   color: var(--on-primary);
-  border: none;
-  box-shadow: 0 2px 8px rgba(139, 49, 255, 0.3);
+  border: none;  box-shadow: 0 2px 8px rgba(255, 49, 241, 0.3);
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.button-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 49, 255, 0.4);
+.button-primary:hover {  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 49, 241, 0.4);
 }
 
 .button-primary::before {
